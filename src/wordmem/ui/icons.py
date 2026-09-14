@@ -80,8 +80,17 @@ def _draw(name: str, p: QPainter) -> None:
         p.setBrush(QColor(p.pen().color()))
         p.drawPath(path)
         p.restore()
-    elif name == "pin":
+    elif name == "pin":  # 置顶（未开启）：空心外描的大头针
         p.drawRoundedRect(QRectF(s * 0.34, s * 0.18, s * 0.32, s * 0.32), 6, 6)
+        p.drawLine(QPointF(s * 0.5, s * 0.50), QPointF(s * 0.5, s * 0.62))
+        p.drawLine(QPointF(s * 0.36, s * 0.62), QPointF(s * 0.64, s * 0.62))
+        p.drawLine(QPointF(s * 0.5, s * 0.62), QPointF(s * 0.5, s * 0.84))
+    elif name == "pin_on":  # 置顶（开启）：针头实心填充
+        p.setPen(Qt.NoPen)
+        p.setBrush(QColor(p.pen().color()))
+        p.drawRoundedRect(QRectF(s * 0.34, s * 0.18, s * 0.32, s * 0.32), 6, 6)
+        p.setPen(_pen_of(p))
+        p.setBrush(Qt.NoBrush)
         p.drawLine(QPointF(s * 0.5, s * 0.50), QPointF(s * 0.5, s * 0.62))
         p.drawLine(QPointF(s * 0.36, s * 0.62), QPointF(s * 0.64, s * 0.62))
         p.drawLine(QPointF(s * 0.5, s * 0.62), QPointF(s * 0.5, s * 0.84))
@@ -90,8 +99,17 @@ def _draw(name: str, p: QPainter) -> None:
     elif name == "close":
         p.drawLine(QPointF(s * 0.32, s * 0.32), QPointF(s * 0.68, s * 0.68))
         p.drawLine(QPointF(s * 0.68, s * 0.32), QPointF(s * 0.32, s * 0.68))
-    elif name == "fold":  # 自动折叠：上箭头收入顶部横条
-        p.drawLine(QPointF(s * 0.24, s * 0.26), QPointF(s * 0.76, s * 0.26))
+    elif name == "fold":  # 自动隐藏（未开启）：顶部横条 + 向上箭头，全为描边
+        p.drawRect(QRectF(s * 0.24, s * 0.26, s * 0.52, s * 0.08))
+        p.drawLine(QPointF(s * 0.5, s * 0.78), QPointF(s * 0.5, s * 0.44))
+        p.drawLine(QPointF(s * 0.5, s * 0.44), QPointF(s * 0.36, s * 0.58))
+        p.drawLine(QPointF(s * 0.5, s * 0.44), QPointF(s * 0.64, s * 0.58))
+    elif name == "fold_on":  # 自动隐藏（开启）：顶部横条实心填充
+        p.setPen(Qt.NoPen)
+        p.setBrush(QColor(p.pen().color()))
+        p.drawRect(QRectF(s * 0.24, s * 0.26, s * 0.52, s * 0.08))
+        p.setPen(_pen_of(p))
+        p.setBrush(Qt.NoBrush)
         p.drawLine(QPointF(s * 0.5, s * 0.78), QPointF(s * 0.5, s * 0.44))
         p.drawLine(QPointF(s * 0.5, s * 0.44), QPointF(s * 0.36, s * 0.58))
         p.drawLine(QPointF(s * 0.5, s * 0.44), QPointF(s * 0.64, s * 0.58))

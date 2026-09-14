@@ -15,11 +15,13 @@ class IconButton(QAbstractButton):
 
     def __init__(self, name: str, color: str = "#5a6b72", size: int = 32,
                  icon_size: int = 18, tooltip: str = "", checkable: bool = False,
+                 filled_on_check: bool = False,
                  parent: QWidget | None = None) -> None:
         super().__init__(parent)
         self._name = name
         self._color = color
         self._icon_size = icon_size
+        self._filled_on_check = filled_on_check   # 选中时切换为“{name}_on”实心图标
         self.setFixedSize(size, size)
         self.setCheckable(checkable)
         self.setCursor(Qt.PointingHandCursor)
@@ -39,7 +41,11 @@ class IconButton(QAbstractButton):
         p.drawRoundedRect(self.rect(), 8, 8)
         x = (self.width() - self._icon_size) / 2
         y = (self.height() - self._icon_size) / 2
-        icon(self._name, self._color, self._icon_size).paint(
+        icon_name = (
+            f"{self._name}_on" if (self._filled_on_check and self.isChecked())
+            else self._name
+        )
+        icon(icon_name, self._color, self._icon_size).paint(
             p, int(x), int(y), self._icon_size, self._icon_size)
 
     def enterEvent(self, ev) -> None:  # noqa: N802

@@ -32,8 +32,9 @@ class TitleBar(QWidget):
         self.btn_ghost = IconButton("ghost", checkable=True,
                                     tooltip="背景超透明模式（保留轮廓）")
         self.btn_opacity = IconButton("opacity", tooltip="调节按钮与字体不透明度")
-        self.btn_pin = IconButton("pin", checkable=True, tooltip="窗口置顶")
-        self.btn_fold = IconButton("fold", checkable=True,
+        self.btn_pin = IconButton("pin", checkable=True, filled_on_check=True,
+                                  tooltip="窗口置顶")
+        self.btn_fold = IconButton("fold", checkable=True, filled_on_check=True,
                                    tooltip="鼠标移出窗口时自动隐藏（仅保留菜单栏）")
         self.btn_min = IconButton("minimize", tooltip="最小化")
         self.btn_close = IconButton("close", color="#7d5a5a", tooltip="关闭")
