@@ -27,14 +27,24 @@ def _draw(name: str, p: QPainter) -> None:
     rect = QRectF(m, m, s - 2 * m, s - 2 * m)
     center = QPointF(s / 2, s / 2)
 
-    if name == "settings":  # 滑杆设置
-        ys = (s * 0.30, s * 0.50, s * 0.70)
-        knobs = (s * 0.62, s * 0.36, s * 0.58)
-        for y, kx in zip(ys, knobs):
-            p.drawLine(QPointF(m + 4, y), QPointF(s - m - 4, y))
-            p.setBrush(QColor(p.pen().color()))
-            p.drawEllipse(QPointF(kx, y), 5, 5)
-            p.setBrush(Qt.NoBrush)
+    if name == "settings":  # 齿轮设置
+        p.save()
+        p.translate(center)
+        p.setBrush(QColor(p.pen().color()))
+        p.setPen(Qt.NoPen)
+        for i in range(8):          # 8 个轮齿，45° 均布
+            p.save()
+            p.rotate(i * 45)
+            p.drawRoundedRect(QRectF(-s * 0.078, -s * 0.344,
+                                     s * 0.156, s * 0.078),
+                              s * 0.03, s * 0.03)
+            p.restore()
+        p.restore()
+        ring_pen = QPen(p.pen())    # 齿圈：粗描边圆，与轮齿融合
+        ring_pen.setWidthF(s * 0.094)
+        p.setPen(ring_pen)
+        p.setBrush(Qt.NoBrush)
+        p.drawEllipse(center, s * 0.235, s * 0.235)
     elif name == "chart":  # 统计柱状图
         p.drawLine(QPointF(m + 4, m + 2), QPointF(m + 4, s - m - 4))
         p.drawLine(QPointF(m + 4, s - m - 4), QPointF(s - m - 2, s - m - 4))
@@ -154,6 +164,11 @@ def _draw(name: str, p: QPainter) -> None:
         p.setBrush(QColor(p.pen().color()))
         p.setPen(Qt.NoPen)
         p.drawEllipse(QPointF(s * 0.5, s * 0.5), 5, 5)
+    elif name == "minus":  # 减少
+        p.drawLine(QPointF(s * 0.30, s * 0.5), QPointF(s * 0.70, s * 0.5))
+    elif name == "plus":  # 增加
+        p.drawLine(QPointF(s * 0.30, s * 0.5), QPointF(s * 0.70, s * 0.5))
+        p.drawLine(QPointF(s * 0.5, s * 0.30), QPointF(s * 0.5, s * 0.70))
     else:  # 兜底：实心圆
         p.setBrush(QColor(p.pen().color()))
         p.setPen(Qt.NoPen)

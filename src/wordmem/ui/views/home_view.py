@@ -97,7 +97,7 @@ class BookCard(Card):
         lay.addWidget(self.counter)
         lay.addSpacing(6)
 
-        self.bar = SmoothBar(show_label=True)
+        self.bar = SmoothBar(show_label=True, fill_color=theme.GREEN_ICON)
         self.bar.setFixedHeight(20)
         lay.addWidget(self.bar)
 

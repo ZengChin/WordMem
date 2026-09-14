@@ -2,8 +2,8 @@
 """通用 UI 控件：图标按钮、胶囊按钮、卡片、进度条、轮播圆点。"""
 from __future__ import annotations
 
-from PySide6.QtCore import QPointF, QRectF, Qt, QSize
-from PySide6.QtGui import QColor, QPainter
+from PySide6.QtCore import QEasingCurve, QPointF, QRectF, Qt, QSize, QVariantAnimation
+from PySide6.QtGui import QColor, QFontMetrics, QLinearGradient, QPainter, QPen
 from PySide6.QtWidgets import QAbstractButton, QPushButton, QWidget
 
 from wordmem.ui import theme
@@ -101,36 +101,109 @@ class Card(QWidget):
 
 
 class SmoothBar(QWidget):
-    """圆角进度条，可内置左侧百分比文字。"""
+    """圆角进度条：渐变填充 + 顶部高光 + 平滑动画，可内置居中百分比。"""
 
     def __init__(self, show_label: bool = False, fill_color: str = "#fdfdf4",
                  parent: QWidget | None = None) -> None:
         super().__init__(parent)
         self._fraction = 0.0
+        self._shown = 0.0            # 动画过程中的显示值
         self._show_label = show_label
         self._fill = fill_color
+        self._anim: QVariantAnimation | None = None
         self.setFixedHeight(18)
 
     def set_fraction(self, fraction: float) -> None:
-        self._fraction = max(0.0, min(1.0, fraction))
+        """设置进度 0~1；数值变化时以平滑动画过渡。"""
+        target = max(0.0, min(1.0, fraction))
+        if abs(target - self._fraction) < 1e-4 and self._anim is None:
+            return
+        self._fraction = target
+        if self._anim is not None:
+            self._anim.stop()
+            self._anim.deleteLater()
+        anim = QVariantAnimation(self)
+        anim.setStartValue(self._shown)
+        anim.setEndValue(target)
+        anim.setDuration(450)
+        anim.setEasingCurve(QEasingCurve.OutCubic)
+        anim.valueChanged.connect(self._on_tick)
+        anim.finished.connect(self._on_done)
+        self._anim = anim
+        anim.start()
+
+    def _on_tick(self, value) -> None:
+        self._shown = float(value)
         self.update()
+
+    def _on_done(self) -> None:
+        if self._anim is not None:
+            self._anim.deleteLater()
+            self._anim = None
 
     def paintEvent(self, ev) -> None:  # noqa: N802
         p = QPainter(self)
         p.setRenderHint(QPainter.Antialiasing)
-        track = QRectF(0, (self.height() - 9) / 2, self.width(), 9)
+        bar_h = 12.0
+        radius = bar_h / 2
+        track = QRectF(0, (self.height() - bar_h) / 2, self.width(), bar_h)
+
+        # 轨道：半透明胶囊 + 内描边
         p.setPen(Qt.NoPen)
         track_alpha = theme.GHOST_TRACK_ALPHA if theme.ghost_mode() else theme.TRACK[1]
         p.setBrush(QColor(255, 255, 255, track_alpha))
-        p.drawRoundedRect(track, 4.5, 4.5)
-        if self._fraction > 0.005:
-            w = max(track.width() * self._fraction, 12)
-            p.setBrush(QColor(self._fill))
-            p.drawRoundedRect(QRectF(track.x(), track.y(), w, track.height()), 4.5, 4.5)
+        p.drawRoundedRect(track, radius, radius)
+        p.setBrush(Qt.NoBrush)
+        pen = QPen(QColor(47, 62, 70, 26))
+        pen.setWidthF(1.0)
+        p.setPen(pen)
+        p.drawRoundedRect(track.adjusted(0.5, 0.5, -0.5, -0.5),
+                          radius - 0.5, radius - 0.5)
+        p.setPen(Qt.NoPen)
+
+        # 填充：垂直渐变 + 顶部高光
+        fill_rect = None
+        if self._shown > 0.005:
+            w = max(track.width() * self._shown, bar_h)   # 最短为一个整圆
+            fill_rect = QRectF(track.x(), track.y(), w, track.height())
+            base = QColor(self._fill)
+            grad = QLinearGradient(fill_rect.topLeft(), fill_rect.bottomLeft())
+            grad.setColorAt(0.0, base.lighter(118))
+            grad.setColorAt(1.0, base.darker(106))
+            p.setBrush(grad)
+            p.drawRoundedRect(fill_rect, radius, radius)
+            gloss = fill_rect.adjusted(2.5, 1.5, -2.5, -radius)
+            p.setBrush(QColor(255, 255, 255, 52))
+            p.drawRoundedRect(gloss, gloss.height() / 2, gloss.height() / 2)
+
         if self._show_label:
-            p.setPen(QColor(122, 138, 148))
-            p.drawText(QRectF(10, 0, 120, self.height()),
-                       Qt.AlignVCenter | Qt.AlignLeft, f"{self._fraction * 100:.2f}%")
+            self._draw_label(p, track, fill_rect)
+
+    def _draw_label(self, p: QPainter, track: QRectF,
+                    fill_rect: QRectF | None) -> None:
+        """百分比文字居中：压在填充上为白色，其余为青灰，跨界时分段着色。"""
+        text = f"{self._shown * 100:.1f}%"
+        f = p.font()
+        f.setPixelSize(10)
+        f.setBold(True)
+        p.setFont(f)
+        fm = QFontMetrics(f)
+        tw = fm.horizontalAdvance(text)
+        left = track.center().x() - tw / 2
+        pos = QPointF(left, track.center().y() + (fm.ascent() - fm.descent()) / 2)
+        covered = fill_rect is not None and fill_rect.right() >= left + tw
+        bare = fill_rect is None or fill_rect.right() <= left
+        if covered or bare:
+            p.setPen(QColor(255, 255, 255, 240) if covered else QColor(theme.INK_SOFT))
+            p.drawText(pos, text)
+        else:
+            p.setPen(QColor(theme.INK_SOFT))
+            p.drawText(pos, text)
+            p.save()
+            p.setClipRect(fill_rect)
+            p.setPen(QColor(255, 255, 255, 240))
+            p.drawText(pos, text)
+            p.restore()
 
 
 class Dots(QWidget):
@@ -157,3 +230,58 @@ class Dots(QWidget):
             alpha = 120 if i == self._index else 70
             p.setBrush(QColor(90, 105, 114, alpha))
             p.drawEllipse(QPointF(8 + i * 16, self.height() / 2), r, r)
+
+
+class Switch(QAbstractButton):
+    """滑动开关：胶囊轨道 + 平滑移动的圆形滑块。"""
+
+    def __init__(self, parent: QWidget | None = None) -> None:
+        super().__init__(parent)
+        self.setCheckable(True)
+        self.setCursor(Qt.PointingHandCursor)
+        self.setFixedSize(40, 22)
+        self._pos = 0.0              # 滑块位置 0=左(关) 1=右(开)
+        self._anim: QVariantAnimation | None = None
+        self.toggled.connect(self._on_toggled)
+
+    def _on_toggled(self, checked: bool) -> None:
+        target = 1.0 if checked else 0.0
+        if not self.isVisible():     # 程序化初始化直接到位
+            self._pos = target
+            self.update()
+            return
+        if self._anim is not None:
+            self._anim.stop()
+            self._anim.deleteLater()
+        anim = QVariantAnimation(self)
+        anim.setStartValue(self._pos)
+        anim.setEndValue(target)
+        anim.setDuration(170)
+        anim.setEasingCurve(QEasingCurve.OutCubic)
+        anim.valueChanged.connect(self._on_tick)
+        anim.finished.connect(self._on_done)
+        self._anim = anim
+        anim.start()
+
+    def _on_tick(self, value) -> None:
+        self._pos = float(value)
+        self.update()
+
+    def _on_done(self) -> None:
+        if self._anim is not None:
+            self._anim.deleteLater()
+            self._anim = None
+
+    def paintEvent(self, ev) -> None:  # noqa: N802
+        p = QPainter(self)
+        p.setRenderHint(QPainter.Antialiasing)
+        p.setPen(Qt.NoPen)
+        h = self.height()
+        r = h / 2 - 1
+        track = QRectF(1, 1, self.width() - 2, h - 2)
+        p.setBrush(QColor(theme.GREEN_ICON) if self.isChecked()
+                   else QColor(47, 62, 70, 42))
+        p.drawRoundedRect(track, r, r)
+        cx = 1 + r + self._pos * (self.width() - 2 - 2 * r)
+        p.setBrush(QColor(255, 255, 255))
+        p.drawEllipse(QPointF(cx, h / 2), r - 1.5, r - 1.5)
