@@ -86,22 +86,24 @@ class StudySession:
 
     mode: str                       # "new" | "review"
     items: list[SessionItem] = field(default_factory=list)
-    index: int = 0                  # 当前下标
+    index: int = 0                  # 当前下标（沿含重现副本的完整序列推进）
     passed: int = 0                 # 首次作答即答对的唯一词数
     failed: int = 0                 # 首次作答答错（需组内巩固）的唯一词数
+    done: int = 0                   # 已答对（含重现）的词数，用于进度展示
 
     @property
     def total(self) -> int:
-        return len(self.items)
+        """本组唯一词数（答错重现副本不计入），即用户设置的一组单词数。"""
+        return sum(1 for it in self.items if not it.requeued)
 
     @property
     def position(self) -> int:
-        """人类可读进度，如 3 / 20。"""
-        return min(self.index + 1, self.total)
+        """人类可读进度，如 3 / 20；答错重现不改变已答对进度。"""
+        return min(self.done + 1, self.total)
 
     @property
     def finished(self) -> bool:
-        return self.index >= self.total
+        return self.index >= len(self.items)
 
     def current(self) -> Optional[SessionItem]:
         if self.finished:

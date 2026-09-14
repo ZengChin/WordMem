@@ -164,7 +164,9 @@ class SessionTestCase(unittest.TestCase):
         result = self.service.grade(session, session.items[0], GRADE_AGAIN, self.today)
         self.assertTrue(result.requeued)
         session.index += 1
-        self.assertEqual(session.total, 21)
+        # 显示总数保持本组唯一词数，不随重现增长；序列长度含重现副本
+        self.assertEqual(session.total, 20)
+        self.assertEqual(len(session.items), 21)
         # gap=2：原词在下标 0，重现副本被插到下标 3（隔 2 个词后）
         positions = [i for i, it in enumerate(session.items) if it.word.id == wid]
         self.assertEqual(positions, [0, 3])
@@ -174,17 +176,20 @@ class SessionTestCase(unittest.TestCase):
         wid = session.current().word.id
         # 首次答错 -> 隔 2 词重现
         self.service.grade(session, session.items[0], GRADE_AGAIN, self.today)
-        self.assertEqual(session.total, 21)
+        self.assertEqual(session.total, 20)
+        self.assertEqual(len(session.items), 21)
         # 重现位（下标 3）再答错 -> 继续重现
         session.index = 3
         self.service.grade(session, session.items[3], GRADE_AGAIN, self.today)
-        self.assertEqual(session.total, 22)
+        self.assertEqual(session.total, 20)
+        self.assertEqual(len(session.items), 22)
         # 最新副本答对 -> 不再重现
         positions = [i for i, it in enumerate(session.items) if it.word.id == wid]
         last = positions[-1]
         session.index = last
         self.service.grade(session, session.items[last], GRADE_GOOD, self.today)
-        self.assertEqual(session.total, 22)
+        self.assertEqual(session.total, 20)
+        self.assertEqual(len(session.items), 22)
         # 唯一词统计只算首次作答（此词首次答错）
         self.assertEqual(session.failed, 1)
         self.assertEqual(session.passed, 0)

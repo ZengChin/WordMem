@@ -62,6 +62,7 @@ class StudyService:
             "index": session.index,
             "passed": session.passed,
             "failed": session.failed,
+            "done": session.done,
             "items": [
                 {"id": it.word.id, "requeued": it.requeued}
                 for it in session.items
@@ -100,6 +101,7 @@ class StudyService:
         session.index = min(int(data.get("index", 0)), len(items))
         session.passed = int(data.get("passed", 0))
         session.failed = int(data.get("failed", 0))
+        session.done = int(data.get("done", 0))
         if session.finished:            # 已完成但未清除的异常残留
             self.clear_session(mode)
             return None
@@ -156,6 +158,8 @@ class StudyService:
                 session.passed += 1
             else:
                 session.failed += 1
+        if passed:                     # 进度：每个词答对一次即计入（含重现副本）
+            session.done += 1
         return GradeResult(state=state, requeued=requeued)
 
     def _requeue_offset(self) -> int:
