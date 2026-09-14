@@ -139,6 +139,21 @@ def _draw(name: str, p: QPainter) -> None:
         p.drawLine(QPointF(s * 0.26, s * 0.5), QPointF(s * 0.70, s * 0.5))
         p.drawLine(QPointF(s * 0.70, s * 0.5), QPointF(s * 0.54, s * 0.34))
         p.drawLine(QPointF(s * 0.70, s * 0.5), QPointF(s * 0.54, s * 0.66))
+    elif name == "list":  # 单词列表：三条带圆点行
+        ys = (s * 0.30, s * 0.50, s * 0.70)
+        p.setBrush(QColor(p.pen().color()))
+        p.setPen(Qt.NoPen)
+        for y in ys:
+            p.drawEllipse(QPointF(s * 0.28, y), 2.6, 2.6)
+        p.setPen(_pen_of(p))
+        p.setBrush(Qt.NoBrush)
+        for y in ys:
+            p.drawLine(QPointF(s * 0.38, y), QPointF(s * 0.74, y))
+    elif name == "eye":  # 显示/隐藏中文：眼睛
+        p.drawEllipse(QRectF(s * 0.16, s * 0.30, s * 0.68, s * 0.40))
+        p.setBrush(QColor(p.pen().color()))
+        p.setPen(Qt.NoPen)
+        p.drawEllipse(QPointF(s * 0.5, s * 0.5), 5, 5)
     else:  # 兜底：实心圆
         p.setBrush(QColor(p.pen().color()))
         p.setPen(Qt.NoPen)

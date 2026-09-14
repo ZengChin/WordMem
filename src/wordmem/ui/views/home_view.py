@@ -77,10 +77,13 @@ class BookCard(Card):
         top = QHBoxLayout()
         self.name = QLabel("词书")
         self.name.setStyleSheet(f"color:{theme.GREEN}; font-size:15px; font-weight:600;")
+        self.list_btn = IconButton("list", color=theme.GREEN, size=26,
+                                   icon_size=14, tooltip="查看全部单词")
         self.more = IconButton("chevron", color=theme.GREEN, size=26, icon_size=14,
                                tooltip="词书详情")
         top.addWidget(self.name)
         top.addStretch(1)
+        top.addWidget(self.list_btn)
         top.addWidget(self.more)
         lay.addLayout(top)
 
@@ -103,6 +106,7 @@ class HomeView(QWidget):
     """首页视图。"""
 
     start_session = Signal(str)  # "new" / "review"
+    word_list_requested = Signal()
 
     def __init__(self, ctx, parent=None) -> None:
         super().__init__(parent)
@@ -141,6 +145,7 @@ class HomeView(QWidget):
         self.btn_settings.clicked.connect(self._open_settings)
         self.btn_stats.clicked.connect(self._open_stats)
         self.book_card.more.clicked.connect(self._open_book_info)
+        self.book_card.list_btn.clicked.connect(self._open_word_list)
 
         self.refresh()
 
@@ -185,3 +190,6 @@ class HomeView(QWidget):
         from wordmem.ui.views.dialogs import BookInfoDialog
 
         BookInfoDialog(self.ctx, self.window()).exec()
+
+    def _open_word_list(self) -> None:
+        self.word_list_requested.emit()

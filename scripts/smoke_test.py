@@ -266,6 +266,41 @@ def main() -> None:
     check(win.home_view.card_review.button.isEnabled(),
           "背完一组后复习入口恢复可用")
 
+    # ---- 首页词书卡列表按钮 -> 主窗口内切换到全部单词列表页 ----
+    wlv = win.word_list_view
+    check(win.home_view.book_card.list_btn is not None, "词书卡右上角有列表按钮")
+    QTest.mouseClick(win.home_view.book_card.list_btn, Qt.LeftButton)
+    check(win.stack.currentWidget() is wlv,
+          "点击列表按钮在主窗口内切换到单词列表页")
+    app.processEvents()
+    total_words = len(wlv.list_view._words)
+    check(total_words == ctx.repo.count_words() == 4127,
+          f"列表加载全部单词(实际 {total_words})")
+    check(len(wlv.list_view._shown) == 0, "默认不显示任何中文释义")
+    check(wlv.btn_toggle.text() == "显示全部中文", "顶部按钮默认文案为显示全部中文")
+    check(wlv.list_view.width() > 0 and wlv.list_view.height() >= 44,
+          f"列表控件有实际渲染尺寸(宽 {wlv.list_view.width()} 高 {wlv.list_view.height()})")
+
+    # 点击某行 -> 仅该行显示中文
+    QTest.mouseClick(wlv.list_view, Qt.LeftButton, pos=QPoint(80, 22))
+    check(0 in wlv.list_view._shown and len(wlv.list_view._shown) == 1,
+          "点击单词行后仅该行显示中文")
+    QTest.mouseClick(wlv.list_view, Qt.LeftButton, pos=QPoint(80, 22))
+    check(len(wlv.list_view._shown) == 0, "再次点击同一行可隐藏中文")
+
+    # 一键切换全部中文
+    wlv.btn_toggle.click()
+    check(wlv._all_shown and len(wlv.list_view._shown) == total_words,
+          "切换后全部单词显示中文")
+    check(wlv.btn_toggle.text() == "隐藏全部中文", "按钮文案切换为隐藏全部中文")
+    wlv.btn_toggle.click()
+    check(not wlv._all_shown and len(wlv.list_view._shown) == 0,
+          "再次切换后全部中文隐藏")
+
+    # 返回首页
+    wlv.btn_back.click()
+    check(win.stack.currentWidget() is win.home_view, "返回按钮回到首页")
+
     win.close()
     ctx.repo.close()
     try:

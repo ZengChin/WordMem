@@ -35,6 +35,7 @@ from wordmem.ui.title_bar import TitleBar
 from wordmem.ui.views.home_view import HomeView
 from wordmem.ui.views.spell_view import SpellView
 from wordmem.ui.views.study_view import StudyView
+from wordmem.ui.views.word_list_view import WordListPage
 
 # ---- Windows 原生命中测试常量 ----
 WM_NCHITTEST = 0x0084
@@ -91,9 +92,11 @@ class MainWindow(QWidget):
         self.home_view = HomeView(ctx, self)
         self.study_view = StudyView(ctx, self)
         self.spell_view = SpellView(ctx, self)
+        self.word_list_view = WordListPage(ctx, self)
         self.stack.addWidget(self.home_view)
         self.stack.addWidget(self.study_view)
         self.stack.addWidget(self.spell_view)
+        self.stack.addWidget(self.word_list_view)
 
         content = QWidget(self)
         self.content = content          # 自动隐藏时需要整体隐藏/恢复
@@ -113,9 +116,11 @@ class MainWindow(QWidget):
         self.title_bar.close_requested.connect(self.close)
 
         self.home_view.start_session.connect(self._start_session)
+        self.home_view.word_list_requested.connect(self._open_word_list)
         self.study_view.back_requested.connect(self._go_home)
         self.study_view.spell_requested.connect(self._begin_spell)
         self.spell_view.back_requested.connect(self._go_home)
+        self.word_list_view.back_requested.connect(self._go_home)
 
         self._apply_config()
         self.stack.setCurrentWidget(self.home_view)
@@ -293,6 +298,11 @@ class MainWindow(QWidget):
         """完成页点击"开始拼写"后进入拼写练习。"""
         self.spell_view.begin(self.study_view.session)
         self.stack.setCurrentWidget(self.spell_view)
+
+    def _open_word_list(self) -> None:
+        """首页词书卡列表按钮：在主窗口内切换到全部单词列表页。"""
+        self.word_list_view.refresh()
+        self.stack.setCurrentWidget(self.word_list_view)
 
     # ------------------------------------------------------------ 原生拖边缩放
     def nativeEvent(self, eventType, message):  # noqa: N802

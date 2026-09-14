@@ -225,6 +225,13 @@ class Repository:
         ).fetchall()
         return [self._to_word(r) for r in rows]
 
+    def get_all_words(self) -> list[Word]:
+        """获取当前词库全部单词（按词库顺序）。"""
+        rows = self._conn.execute(
+            "SELECT * FROM words ORDER BY id"
+        ).fetchall()
+        return [self._to_word(r) for r in rows]
+
     # ------------------------------------------------------------------ 状态
     def get_state(self, word_id: int) -> Optional[WordState]:
         row = self._conn.execute(
