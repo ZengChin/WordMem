@@ -131,6 +131,17 @@ class SpellView(QWidget):
         self.feedback_label.setFixedHeight(48)
         lay.addWidget(self.feedback_label)
 
+        # ---- 完成态（内容区） ----
+        self.done_label = QLabel("拼写完成！")
+        self.done_label.setAlignment(Qt.AlignCenter)
+        self.done_label.setStyleSheet(
+            f"color:{theme.INK}; font-size:24px; font-weight:600;")
+        self.done_summary = QLabel("")
+        self.done_summary.setAlignment(Qt.AlignCenter)
+        self.done_summary.setStyleSheet(f"color:{theme.INK_SOFT}; font-size:14px;")
+        lay.addWidget(self.done_label)
+        lay.addWidget(self.done_summary)
+
         lay.addStretch(1)
 
         # ---- 进度条 ----
@@ -143,15 +154,6 @@ class SpellView(QWidget):
         self.btn_finish = PillButton("结束拼写", "back", theme.GREEN)
         footer.addWidget(self.btn_finish, 1)
         lay.addLayout(footer)
-
-        # ---- 完成态 ----
-        self.done_label = QLabel("拼写完成！")
-        self.done_label.setAlignment(Qt.AlignCenter)
-        self.done_label.setStyleSheet(
-            f"color:{theme.INK}; font-size:24px; font-weight:600;")
-        self.done_summary = QLabel("")
-        self.done_summary.setAlignment(Qt.AlignCenter)
-        self.done_summary.setStyleSheet(f"color:{theme.INK_SOFT}; font-size:14px;")
 
         # ---- 信号 ----
         self.btn_back.clicked.connect(self.back_requested)

@@ -129,6 +129,8 @@ class StudyView(QWidget):
         self.done_summary = QLabel("")
         self.done_summary.setAlignment(Qt.AlignCenter)
         self.done_summary.setStyleSheet(f"color:{theme.INK_SOFT}; font-size:14px;")
+        lay.addWidget(self.done_label)
+        lay.addWidget(self.done_summary)
 
         lay.addStretch(1)
 
