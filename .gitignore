@@ -7,4 +7,9 @@ dist/
 venv/
 .pytest_cache/
 user_data/
+# 用户数据（跟随主程序所在目录，含配置/数据库/日志）
+WordMem/
+WordMem/logs/
+WordMem/wordmem.db
+WordMem/config.json
 packaging/Languages/
