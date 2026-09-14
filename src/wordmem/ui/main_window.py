@@ -36,6 +36,7 @@ from wordmem.ui.views.home_view import HomeView
 from wordmem.ui.views.spell_view import SpellView
 from wordmem.ui.views.study_view import StudyView
 from wordmem.ui.views.word_list_view import WordListPage
+from wordmem.ui.widgets import PillButton
 
 # ---- Windows 原生命中测试常量 ----
 WM_NCHITTEST = 0x0084
@@ -156,12 +157,15 @@ class MainWindow(QWidget):
 
     # ------------------------------------------------------------ 背景透明模式
     def _on_ghost(self, checked: bool) -> None:
-        """切换背景/边框是否超透明；按钮与字体不变，仅菜单栏转半透明。"""
+        """切换背景/边框是否超透明；按钮底色隐形但文字保留，仅菜单栏转半透明。"""
         self.ctx.config.ghost_mode = checked
         theme.set_ghost_mode(checked)          # 卡片/进度条变超透明
         self._apply_fg_opacity(self.ctx.config.ui_opacity)  # 刷新菜单栏透明度
         for w in QApplication.allWidgets():    # 全量重绘
-            w.update()
+            if isinstance(w, PillButton):      # 按钮底色随透明模式隐形（文字保留）
+                w.refresh()
+            else:
+                w.update()
 
     def _show_opacity_dial(self) -> None:
         """点击调节按钮弹出/隐藏线性滑条（类似进度条）。"""

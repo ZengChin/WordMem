@@ -64,14 +64,24 @@ class PillButton(QPushButton):
         self._apply_qss(150)
 
     def _apply_qss(self, alpha: int) -> None:
+        ghost = theme.ghost_mode()
+        base = theme.GHOST_PILL_ALPHA if ghost else alpha
+        hover = theme.GHOST_PILL_HOVER if ghost else 215
+        pressed = theme.GHOST_PILL_PRESSED if ghost else 235
+        disabled = base if ghost else 90
         self.setStyleSheet(
             f"PillButton {{ color: {self._color}; font-size: 15px; font-weight: 500;"
             f" padding: 0 22px; border-radius: 23px;"
-            f" background: rgba(255,255,255,{alpha}); }}"
-            f"PillButton:hover {{ background: rgba(255,255,255,215); }}"
-            f"PillButton:pressed {{ background: rgba(255,255,255,235); }}"
-            f"PillButton:disabled {{ color: #9aa8ae; background: rgba(255,255,255,90); }}"
+            f" background: rgba(255,255,255,{base}); }}"
+            f"PillButton:hover {{ background: rgba(255,255,255,{hover}); }}"
+            f"PillButton:pressed {{ background: rgba(255,255,255,{pressed}); }}"
+            f"PillButton:disabled {{ color: #9aa8ae;"
+            f" background: rgba(255,255,255,{disabled}); }}"
         )
+
+    def refresh(self) -> None:
+        """透明模式切换后重刷底色，保留当前悬停态。"""
+        self._apply_qss(215 if self.underMouse() else 150)
 
     def enterEvent(self, ev) -> None:  # noqa: N802
         self._apply_qss(215)

@@ -34,6 +34,9 @@ FILL = ("255,255,255", 235)     # 进度条填充
 GHOST_CARD_ALPHA = 12          # 透明模式下卡片底色（仅纯白底上隐约可见）
 GHOST_TRACK_ALPHA = 45         # 透明模式下进度条轨道
 GHOST_BORDER = QColor(88, 100, 110, 42)  # 边框：深灰蓝，纯白底上隐约可见
+GHOST_PILL_ALPHA = 0           # 透明模式下按钮底色（隐形，仅保留文字）
+GHOST_PILL_HOVER = 26          # 透明模式下按钮悬停反馈
+GHOST_PILL_PRESSED = 42        # 透明模式下按钮按下反馈
 
 _ghost_state = {"on": False}
 
