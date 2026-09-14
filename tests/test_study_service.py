@@ -22,6 +22,7 @@ from wordmem.core.models import (  # noqa: E402
     SECOND_INTERVAL,
     STATUS_LEARNING,
     STATUS_MASTERED,
+    THIRD_INTERVAL,
     next_schedule,
 )
 from wordmem.core.repository import Repository  # noqa: E402
@@ -80,16 +81,17 @@ class RepoTestCase(unittest.TestCase):
         self.assertAlmostEqual(state.ease, EF_INIT - 0.14, places=6)
 
     def test_sm2_interval_progression_to_mastery(self) -> None:
-        """连续答对：间隔 1 -> 6 -> round(6*ease) -> ... 直至成熟。"""
+        """连续答对：间隔 0 -> 2 -> 6 -> round(6*ease) -> ... 直至成熟。"""
         state = None
         intervals = []
-        for _ in range(4):
+        for _ in range(5):
             state = next_schedule(state, GRADE_GOOD, self.today)
             intervals.append(state.interval)
-        self.assertEqual(intervals[0], FIRST_INTERVAL)    # 1
-        self.assertEqual(intervals[1], SECOND_INTERVAL)   # 6
-        self.assertEqual(intervals[2], 16)                # round(6 * 2.7)
-        self.assertEqual(intervals[3], 45)                # round(16 * 2.8)
+        self.assertEqual(intervals[0], FIRST_INTERVAL)    # 0（当天即可复习）
+        self.assertEqual(intervals[1], SECOND_INTERVAL)   # 2
+        self.assertEqual(intervals[2], THIRD_INTERVAL)    # 6
+        self.assertEqual(intervals[3], 17)                # round(6 * 2.8)
+        self.assertEqual(intervals[4], 49)                # round(17 * 2.9)
         self.assertGreaterEqual(state.interval, MATURITY_DAYS)
         self.assertEqual(state.status, STATUS_MASTERED)
 
@@ -123,7 +125,7 @@ class RepoTestCase(unittest.TestCase):
         """已掌握词到期后仍进入复习队列（周期性唤醒）。"""
         word = self.repo.get_new_words(1)[0]
         state = None
-        for _ in range(4):
+        for _ in range(5):
             state = next_schedule(state, GRADE_GOOD, self.today)
         state.word_id = word.id
         self.repo.save_state(state, True, self.today)

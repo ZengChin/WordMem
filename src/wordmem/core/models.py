@@ -15,7 +15,8 @@ STATUS_MASTERED = "mastered"    # 已掌握
 EF_INIT = 2.5                   # 难度因子初值
 EF_MIN = 1.3                    # 难度因子下限
 FIRST_INTERVAL = 0              # 首次答对后的间隔（天）：当天即进入复习列表
-SECOND_INTERVAL = 6             # 第二次答对后的间隔（天）
+SECOND_INTERVAL = 2             # 第二次答对后的间隔（天）：隔 2 天再复习
+THIRD_INTERVAL = 6              # 第三次答对后的间隔（天）：接着隔 6 天
 MATURITY_DAYS = 21              # 间隔达到该天数视为已掌握
 PASS_THRESHOLD = 3              # 质量分 >= 该值视为答对
 
@@ -128,6 +129,8 @@ def next_schedule(state: Optional[WordState], quality: int,
             state.interval = FIRST_INTERVAL
         elif state.reps == 2:
             state.interval = SECOND_INTERVAL
+        elif state.reps == 3:
+            state.interval = THIRD_INTERVAL
         else:
             state.interval = round(state.interval * state.ease)
     # 依据本次质量更新难度因子（下限 EF_MIN），须在计算间隔之后
