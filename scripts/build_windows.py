@@ -55,10 +55,13 @@ def run(cmd: list[str]) -> None:
 
 
 def build_exe() -> None:
-    pyinstaller = ROOT / ".venv" / "Scripts" / "pyinstaller.exe"
-    if not pyinstaller.exists():
-        sys.exit("未找到 PyInstaller，请先执行: .venv/Scripts/pip install pyinstaller")
-    run([pyinstaller, "WordMem.spec", "--noconfirm", "--clean"])
+    # 用当前解释器运行 PyInstaller，兼容本地 .venv 与 CI 系统 Python
+    probe = subprocess.run(
+        [sys.executable, "-m", "PyInstaller", "--version"],
+        capture_output=True, text=True, cwd=ROOT)
+    if probe.returncode != 0:
+        sys.exit("未找到 PyInstaller，请先执行: pip install pyinstaller")
+    run([sys.executable, "-m", "PyInstaller", "WordMem.spec", "--noconfirm", "--clean"])
 
 
 def ensure_chinese_isl() -> None:
