@@ -1,0 +1,33 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "wordmem"
+version = "1.0.0"
+description = "WordMem - 一款极简风格的 Windows 桌面背单词软件"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "WordMem Team" }]
+dependencies = [
+    "PySide6>=6.6",
+    "pyttsx3>=2.90",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0",
+]
+
+[project.scripts]
+wordmem = "wordmem.app:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+wordmem = ["resources/data/*.json"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

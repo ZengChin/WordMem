@@ -1,0 +1,1044 @@
+{
+  "book": {"name": "考研词汇精选", "description": "考研英语高频核心词汇，按记忆曲线科学复习"},
+  "words": [
+    {
+      "word": "abandon",
+      "phonetic": "[əˈbændən]",
+      "meanings": [
+        {"pos": "v.", "meaning": "放弃，抛弃，离弃"},
+        {"pos": "n.", "meaning": "放纵，尽情"}
+      ],
+      "examples": [
+        {"text": "abandon the plan halfway", "trans": "半途放弃计划"},
+        {"text": "They abandoned the search due to bad weather.", "trans": "他们因天气恶劣而放弃了搜寻。"},
+        {"text": "The children ran with abandon.", "trans": "孩子们尽情奔跑。"}
+      ]
+    },
+    {
+      "word": "abolish",
+      "phonetic": "[əˈbɒlɪʃ]",
+      "meanings": [
+        {"pos": "v.", "meaning": "废除，取消"},
+        {"pos": "n.", "meaning": "废除，废止"}
+      ],
+      "examples": [
+        {"text": "abolish the slave trade", "trans": "废除奴隶贸易"},
+        {"text": "The new government abolished the unfair law.", "trans": "新政府废除了这项不公正的法律。"},
+        {"text": "Slavery was abolished in the nineteenth century.", "trans": "奴隶制在十九世纪被废除。"}
+      ]
+    },
+    {
+      "word": "achieve",
+      "phonetic": "[əˈtʃiːv]",
+      "meanings": [
+        {"pos": "v.", "meaning": "达到，完成，实现"},
+        {"pos": "n.", "meaning": "成就，成绩"}
+      ],
+      "examples": [
+        {"text": "achieve one's goal", "trans": "实现目标"},
+        {"text": "She worked hard to achieve her goal.", "trans": "她努力工作以实现目标。"},
+        {"text": "You will never achieve anything without effort.", "trans": "不努力你将一事无成。"}
+      ]
+    },
+    {
+      "word": "advocate",
+      "phonetic": "[ˈædvəkeɪt]",
+      "meanings": [
+        {"pos": "v.", "meaning": "提倡，主张，拥护"},
+        {"pos": "n.", "meaning": "提倡者，拥护者，辩护者"}
+      ],
+      "examples": [
+        {"text": "advocate educational reform", "trans": "提倡教育改革"},
+        {"text": "Many experts advocate a balanced diet.", "trans": "许多专家提倡均衡饮食。"},
+        {"text": "He is a strong advocate of free trade.", "trans": "他是自由贸易的坚定拥护者。"}
+      ]
+    },
+    {
+      "word": "ambiguous",
+      "phonetic": "[æmˈbɪɡjuəs]",
+      "meanings": [
+        {"pos": "a.", "meaning": "模棱两可的，含糊不清的"},
+        {"pos": "n.", "meaning": "歧义，模棱两可"}
+      ],
+      "examples": [
+        {"text": "an ambiguous reply", "trans": "模棱两可的答复"},
+        {"text": "His ambiguous answer confused us all.", "trans": "他含糊的回答让我们都很困惑。"},
+        {"text": "The wording of the contract is ambiguous.", "trans": "这份合同的措辞模棱两可。"}
+      ]
+    },
+    {
+      "word": "anticipate",
+      "phonetic": "[ænˈtɪsɪpeɪt]",
+      "meanings": [
+        {"pos": "v.", "meaning": "预期，预料，期望"},
+        {"pos": "n.", "meaning": "期望，预料"}
+      ],
+      "examples": [
+        {"text": "anticipate future changes", "trans": "预见未来的变化"},
+        {"text": "We anticipate that sales will rise next year.", "trans": "我们预计明年销量会上升。"},
+        {"text": "She anticipated the question and prepared an answer.", "trans": "她预料到了这个问题并准备好了答案。"}
+      ]
+    },
+    {
+      "word": "benefit",
+      "phonetic": "[ˈbenɪfɪt]",
+      "meanings": [
+        {"pos": "n.", "meaning": "利益，好处，益处"},
+        {"pos": "v.", "meaning": "有益于，受益"}
+      ],
+      "examples": [
+        {"text": "benefit from the experience", "trans": "从经验中受益"},
+        {"text": "Regular exercise benefits your health.", "trans": "经常锻炼有益健康。"},
+        {"text": "The new policy will benefit millions of people.", "trans": "新政策将使数百万人受益。"}
+      ]
+    },
+    {
+      "word": "bewilder",
+      "phonetic": "[bɪˈwɪldə]",
+      "meanings": [
+        {"pos": "v.", "meaning": "使迷惑，使不知所措"},
+        {"pos": "n.", "meaning": "困惑，迷乱"}
+      ],
+      "examples": [
+        {"text": "be bewildered by the rules", "trans": "被规则弄得不知所措"},
+        {"text": "The sudden change bewildered the old man.", "trans": "突然的变化使老人不知所措。"},
+        {"text": "She was bewildered by the complicated map.", "trans": "她被复杂的地图弄糊涂了。"}
+      ]
+    },
+    {
+      "word": "circumstance",
+      "phonetic": "[ˈsɜːkəmstəns]",
+      "meanings": [
+        {"pos": "n.", "meaning": "环境，情况，境遇"},
+        {"pos": "a.", "meaning": "受环境影响的，由情况决定的"}
+      ],
+      "examples": [
+        {"text": "under no circumstances", "trans": "在任何情况下都不"},
+        {"text": "We cannot control every circumstance.", "trans": "我们无法控制所有情况。"},
+        {"text": "Under no circumstances should you give up.", "trans": "无论如何你都不应该放弃。"}
+      ]
+    },
+    {
+      "word": "commit",
+      "phonetic": "[kəˈmɪt]",
+      "meanings": [
+        {"pos": "v.", "meaning": "犯（错误、罪行），承诺，投入"},
+        {"pos": "n.", "meaning": "承诺，保证"}
+      ],
+      "examples": [
+        {"text": "commit a serious mistake", "trans": "犯严重错误"},
+        {"text": "He committed a serious mistake.", "trans": "他犯了一个严重错误。"},
+        {"text": "The government committed itself to cutting taxes.", "trans": "政府承诺减税。"}
+      ]
+    },
+    {
+      "word": "comprehensive",
+      "phonetic": "[ˌkɒmprɪˈhensɪv]",
+      "meanings": [
+        {"pos": "a.", "meaning": "全面的，综合的，广泛的"},
+        {"pos": "n.", "meaning": "综合学校"}
+      ],
+      "examples": [
+        {"text": "a comprehensive report", "trans": "一份全面的报告"},
+        {"text": "The book gives a comprehensive introduction to the city.", "trans": "这本书对该城市作了全面的介绍。"},
+        {"text": "We need a comprehensive plan to solve the problem.", "trans": "我们需要一个全面的计划来解决这个问题。"}
+      ]
+    },
+    {
+      "word": "condemn",
+      "phonetic": "[kənˈdem]",
+      "meanings": [
+        {"pos": "v.", "meaning": "谴责，指责，判刑"},
+        {"pos": "n.", "meaning": "谴责，判刑"}
+      ],
+      "examples": [
+        {"text": "condemn the violent act", "trans": "谴责暴力行为"},
+        {"text": "World leaders condemned the terrorist attack.", "trans": "世界各国领导人谴责了这起恐怖袭击。"},
+        {"text": "He was condemned to ten years in prison.", "trans": "他被判处十年监禁。"}
+      ]
+    },
+    {
+      "word": "contradict",
+      "phonetic": "[ˌkɒntrəˈdɪkt]",
+      "meanings": [
+        {"pos": "v.", "meaning": "反驳，与……矛盾"},
+        {"pos": "n.", "meaning": "矛盾，反驳"}
+      ],
+      "examples": [
+        {"text": "contradict one's statement", "trans": "反驳某人的说法"},
+        {"text": "The two reports contradict each other.", "trans": "这两份报告相互矛盾。"},
+        {"text": "Don't contradict your boss in public.", "trans": "不要当众反驳你的上司。"}
+      ]
+    },
+    {
+      "word": "dedicate",
+      "phonetic": "[ˈdedɪkeɪt]",
+      "meanings": [
+        {"pos": "v.", "meaning": "奉献，致力于，把……用于"},
+        {"pos": "n.", "meaning": "献身，奉献"}
+      ],
+      "examples": [
+        {"text": "dedicate oneself to science", "trans": "献身于科学"},
+        {"text": "She dedicated her life to medical research.", "trans": "她一生致力于医学研究。"},
+        {"text": "He dedicated the book to his mother.", "trans": "他把这本书献给他的母亲。"}
+      ]
+    },
+    {
+      "word": "derive",
+      "phonetic": "[dɪˈraɪv]",
+      "meanings": [
+        {"pos": "v.", "meaning": "取得，得到，源于"},
+        {"pos": "n.", "meaning": "起源，派生"}
+      ],
+      "examples": [
+        {"text": "derive pleasure from reading", "trans": "从阅读中获得乐趣"},
+        {"text": "We derive pleasure from reading.", "trans": "我们从阅读中获得乐趣。"},
+        {"text": "The word derives from ancient Greek.", "trans": "这个词源于古希腊语。"}
+      ]
+    },
+    {
+      "word": "deteriorate",
+      "phonetic": "[dɪˈtɪəriəreɪt]",
+      "meanings": [
+        {"pos": "v.", "meaning": "恶化，变坏，退化"},
+        {"pos": "n.", "meaning": "恶化，退化"}
+      ],
+      "examples": [
+        {"text": "deteriorating health", "trans": "不断恶化的健康"},
+        {"text": "His health deteriorated rapidly last winter.", "trans": "去年冬天他的健康状况迅速恶化。"},
+        {"text": "Relations between the two countries deteriorated.", "trans": "两国关系恶化了。"}
+      ]
+    },
+    {
+      "word": "dilemma",
+      "phonetic": "[dɪˈlemə]",
+      "meanings": [
+        {"pos": "n.", "meaning": "困境，进退两难"},
+        {"pos": "a.", "meaning": "左右为难的"}
+      ],
+      "examples": [
+        {"text": "face a moral dilemma", "trans": "面临道德困境"},
+        {"text": "She was in a dilemma about the job offer.", "trans": "她对这份工作邀请左右为难。"},
+        {"text": "The doctor faced an ethical dilemma.", "trans": "这位医生面临伦理上的两难境地。"}
+      ]
+    },
+    {
+      "word": "discern",
+      "phonetic": "[dɪˈsɜːn]",
+      "meanings": [
+        {"pos": "v.", "meaning": "辨别，察觉，看出"},
+        {"pos": "a.", "meaning": "有辨别力的，眼光敏锐的"}
+      ],
+      "examples": [
+        {"text": "discern right from wrong", "trans": "分辨是非"},
+        {"text": "It is hard to discern the truth from the rumor.", "trans": "很难从谣言中辨别真相。"},
+        {"text": "I could barely discern the shape in the fog.", "trans": "我几乎看不清雾中的那个形状。"}
+      ]
+    },
+    {
+      "word": "endeavor",
+      "phonetic": "[ɪnˈdevə]",
+      "meanings": [
+        {"pos": "n.", "meaning": "努力，尽力"},
+        {"pos": "v.", "meaning": "努力，尽力"}
+      ],
+      "examples": [
+        {"text": "make every endeavor", "trans": "竭尽全力"},
+        {"text": "We must endeavor to finish the task on time.", "trans": "我们必须努力按时完成任务。"},
+        {"text": "Scientific endeavor requires patience and curiosity.", "trans": "科学探索需要耐心和好奇心。"}
+      ]
+    },
+    {
+      "word": "essence",
+      "phonetic": "[ˈesns]",
+      "meanings": [
+        {"pos": "n.", "meaning": "本质，实质，精华"},
+        {"pos": "a.", "meaning": "本质的，精华的"}
+      ],
+      "examples": [
+        {"text": "the essence of democracy", "trans": "民主的本质"},
+        {"text": "Time is of the essence in an emergency.", "trans": "紧急情况下时间至关重要。"},
+        {"text": "The essence of his argument is quite simple.", "trans": "他的论点实质很简单。"}
+      ]
+    },
+    {
+      "word": "evaluate",
+      "phonetic": "[ɪˈvæljueɪt]",
+      "meanings": [
+        {"pos": "v.", "meaning": "评估，评价，估算"},
+        {"pos": "n.", "meaning": "评估，评价"}
+      ],
+      "examples": [
+        {"text": "evaluate students' progress", "trans": "评估学生的进步"},
+        {"text": "Teachers evaluate students' progress.", "trans": "老师评估学生的进步。"},
+        {"text": "We need to evaluate the risks before investing.", "trans": "投资前我们需要评估风险。"}
+      ]
+    },
+    {
+      "word": "evident",
+      "phonetic": "[ˈevɪdənt]",
+      "meanings": [
+        {"pos": "a.", "meaning": "明显的，显然的"},
+        {"pos": "n.", "meaning": "明显，显然"}
+      ],
+      "examples": [
+        {"text": "self-evident truth", "trans": "不言而喻的真理"},
+        {"text": "It was evident that she was tired.", "trans": "显然她累了。"},
+        {"text": "The damage was evident after the storm.", "trans": "暴风雨过后损失显而易见。"}
+      ]
+    },
+    {
+      "word": "exaggerate",
+      "phonetic": "[ɪɡˈzædʒəreɪt]",
+      "meanings": [
+        {"pos": "v.", "meaning": "夸大，夸张"},
+        {"pos": "n.", "meaning": "夸张，夸大"}
+      ],
+      "examples": [
+        {"text": "exaggerate the danger", "trans": "夸大危险"},
+        {"text": "Don't exaggerate the difficulty of the exam.", "trans": "不要夸大考试的难度。"},
+        {"text": "He tends to exaggerate his own importance.", "trans": "他往往夸大自己的重要性。"}
+      ]
+    },
+    {
+      "word": "facilitate",
+      "phonetic": "[fəˈsɪlɪteɪt]",
+      "meanings": [
+        {"pos": "v.", "meaning": "促进，使便利，帮助"},
+        {"pos": "n.", "meaning": "便利，促进"}
+      ],
+      "examples": [
+        {"text": "facilitate communication between teams", "trans": "促进团队间的交流"},
+        {"text": "The new software facilitates data analysis.", "trans": "新软件使数据分析变得便利。"},
+        {"text": "Good roads facilitate the transport of goods.", "trans": "良好的道路便利了货物运输。"}
+      ]
+    },
+    {
+      "word": "flourish",
+      "phonetic": "[ˈflʌrɪʃ]",
+      "meanings": [
+        {"pos": "v.", "meaning": "繁荣，兴旺，茂盛"},
+        {"pos": "n.", "meaning": "繁荣，茂盛"}
+      ],
+      "examples": [
+        {"text": "flourish in the new market", "trans": "在新市场蓬勃发展"},
+        {"text": "Business flourished after the reform.", "trans": "改革后生意兴隆。"},
+        {"text": "These plants flourish in warm climates.", "trans": "这些植物在温暖气候下长得茂盛。"}
+      ]
+    },
+    {
+      "word": "foster",
+      "phonetic": "[ˈfɒstə]",
+      "meanings": [
+        {"pos": "v.", "meaning": "培养，促进，收养"},
+        {"pos": "a.", "meaning": "收养的，代养的"}
+      ],
+      "examples": [
+        {"text": "foster a spirit of cooperation", "trans": "培养合作精神"},
+        {"text": "The teacher fostered creativity in her students.", "trans": "这位老师培养了学生的创造力。"},
+        {"text": "They fostered two children from abroad.", "trans": "他们收养了两名外国儿童。"}
+      ]
+    },
+    {
+      "word": "furnish",
+      "phonetic": "[ˈfɜːnɪʃ]",
+      "meanings": [
+        {"pos": "v.", "meaning": "提供，供应，布置家具"},
+        {"pos": "n.", "meaning": "家具，陈设"}
+      ],
+      "examples": [
+        {"text": "furnish the office with desks", "trans": "给办公室配备桌子"},
+        {"text": "The flat is fully furnished.", "trans": "这套公寓配有全套家具。"},
+        {"text": "Please furnish us with the details.", "trans": "请向我们提供详细情况。"}
+      ]
+    },
+    {
+      "word": "genuine",
+      "phonetic": "[ˈdʒenjuɪn]",
+      "meanings": [
+        {"pos": "a.", "meaning": "真正的，非伪造的"},
+        {"pos": "ad.", "meaning": "真诚地，真正地"}
+      ],
+      "examples": [
+        {"text": "genuine concern for others", "trans": "对他人真诚的关心"},
+        {"text": "She showed genuine concern for him.", "trans": "她对他表现出真诚的关心。"},
+        {"text": "The painting was proved to be genuine.", "trans": "这幅画被证明是真品。"}
+      ]
+    },
+    {
+      "word": "grasp",
+      "phonetic": "[ɡrɑːsk]",
+      "meanings": [
+        {"pos": "v.", "meaning": "抓住，理解，掌握"},
+        {"pos": "n.", "meaning": "抓住，理解，掌握"}
+      ],
+      "examples": [
+        {"text": "grasp the main idea", "trans": "抓住大意"},
+        {"text": "He quickly grasped the basic rules.", "trans": "他很快掌握了基本规则。"},
+        {"text": "The concept is beyond my grasp.", "trans": "这个概念超出我的理解能力。"}
+      ]
+    },
+    {
+      "word": "hazard",
+      "phonetic": "[ˈhæzəd]",
+      "meanings": [
+        {"pos": "n.", "meaning": "危险，危害，隐患"},
+        {"pos": "v.", "meaning": "冒险，冒……的风险"}
+      ],
+      "examples": [
+        {"text": "a health hazard", "trans": "健康隐患"},
+        {"text": "Smoking is a serious health hazard.", "trans": "吸烟是严重的健康危害。"},
+        {"text": "Firefighters face many hazards every day.", "trans": "消防员每天面临许多危险。"}
+      ]
+    },
+    {
+      "word": "hesitate",
+      "phonetic": "[ˈhezɪteɪt]",
+      "meanings": [
+        {"pos": "v.", "meaning": "犹豫，迟疑，踌躇"},
+        {"pos": "n.", "meaning": "犹豫，踌躇"}
+      ],
+      "examples": [
+        {"text": "hesitate to ask questions", "trans": "犹豫是否提问"},
+        {"text": "Don't hesitate to ask questions.", "trans": "不要犹豫，尽管提问。"},
+        {"text": "She hesitated before opening the door.", "trans": "她犹豫了一下才开门。"}
+      ]
+    },
+    {
+      "word": "highlight",
+      "phonetic": "[ˈhaɪlaɪt]",
+      "meanings": [
+        {"pos": "v.", "meaning": "强调，突出，使显著"},
+        {"pos": "n.", "meaning": "最精彩的部分，最亮点"}
+      ],
+      "examples": [
+        {"text": "highlight the main problems", "trans": "强调主要问题"},
+        {"text": "The report highlights the need for reform.", "trans": "报告强调了改革的必要性。"},
+        {"text": "The trip was the highlight of the year.", "trans": "这次旅行是这一年中最精彩的部分。"}
+      ]
+    },
+    {
+      "word": "imply",
+      "phonetic": "[ɪmˈplaɪ]",
+      "meanings": [
+        {"pos": "v.", "meaning": "暗示，意味着，含有……的意思"},
+        {"pos": "n.", "meaning": "含义，暗示"}
+      ],
+      "examples": [
+        {"text": "imply agreement", "trans": "暗示同意"},
+        {"text": "His silence implied agreement.", "trans": "他的沉默表示同意。"},
+        {"text": "The data imply that the policy works.", "trans": "这些数据意味着该政策有效。"}
+      ]
+    },
+    {
+      "word": "incentive",
+      "phonetic": "[ɪnˈsentɪv]",
+      "meanings": [
+        {"pos": "n.", "meaning": "刺激，鼓励，动机"},
+        {"pos": "a.", "meaning": "刺激性的，鼓励性的"}
+      ],
+      "examples": [
+        {"text": "offer tax incentives", "trans": "提供税收激励"},
+        {"text": "Bonuses are an incentive to work harder.", "trans": "奖金是激励人们更努力工作的手段。"},
+        {"text": "Tax cuts give companies an incentive to invest.", "trans": "减税给公司提供了投资的动力。"}
+      ]
+    },
+    {
+      "word": "indispensable",
+      "phonetic": "[ˌɪndɪˈspensəbl]",
+      "meanings": [
+        {"pos": "a.", "meaning": "不可缺少的，必需的"},
+        {"pos": "n.", "meaning": "不可缺少之物"}
+      ],
+      "examples": [
+        {"text": "an indispensable tool", "trans": "必不可少的工具"},
+        {"text": "Computers are indispensable in modern offices.", "trans": "计算机在现代办公室中不可或缺。"},
+        {"text": "Water is indispensable to all living things.", "trans": "水对所有生物都是不可缺少的。"}
+      ]
+    },
+    {
+      "word": "integrate",
+      "phonetic": "[ˈɪntɪɡreɪt]",
+      "meanings": [
+        {"pos": "v.", "meaning": "使成整体，使融合，整合"},
+        {"pos": "a.", "meaning": "完整的，融合的"}
+      ],
+      "examples": [
+        {"text": "integrate theory with practice", "trans": "理论联系实际"},
+        {"text": "The app integrates maps with shopping services.", "trans": "这款应用将地图与购物服务整合在一起。"},
+        {"text": "Immigrants should be integrated into society.", "trans": "移民应该融入社会。"}
+      ]
+    },
+    {
+      "word": "intricate",
+      "phonetic": "[ˈɪntrɪkət]",
+      "meanings": [
+        {"pos": "a.", "meaning": "错综复杂的，精细的"},
+        {"pos": "n.", "meaning": "复杂精细"}
+      ],
+      "examples": [
+        {"text": "an intricate design", "trans": "精细复杂的设计"},
+        {"text": "The watch has an intricate mechanism.", "trans": "这块手表有着精密复杂的机械结构。"},
+        {"text": "They discussed the intricate details of the plan.", "trans": "他们讨论了计划中错综复杂的细节。"}
+      ]
+    },
+    {
+      "word": "jeopardize",
+      "phonetic": "[ˈdʒepədaɪz]",
+      "meanings": [
+        {"pos": "v.", "meaning": "危害，危及，使陷入险境"},
+        {"pos": "n.", "meaning": "危险，风险"}
+      ],
+      "examples": [
+        {"text": "jeopardize one's career", "trans": "危及职业生涯"},
+        {"text": "The scandal jeopardized his political career.", "trans": "这一丑闻危及了他的政治生涯。"},
+        {"text": "Smoking jeopardizes your health.", "trans": "吸烟危害你的健康。"}
+      ]
+    },
+    {
+      "word": "justify",
+      "phonetic": "[ˈdʒʌstɪfaɪ]",
+      "meanings": [
+        {"pos": "v.", "meaning": "证明……合理，为……辩护"},
+        {"pos": "n.", "meaning": "正当理由，辩护"}
+      ],
+      "examples": [
+        {"text": "justify the decision", "trans": "证明这个决定合理"},
+        {"text": "Nothing can justify such behavior.", "trans": "没有任何理由能为这种行为辩护。"},
+        {"text": "How can you justify spending so much money?", "trans": "你怎么能为花这么多钱辩解？"}
+      ]
+    },
+    {
+      "word": "legitimate",
+      "phonetic": "[lɪˈdʒɪtɪmət]",
+      "meanings": [
+        {"pos": "a.", "meaning": "合法的，正当的，合理的"},
+        {"pos": "v.", "meaning": "使合法，证明……有理"}
+      ],
+      "examples": [
+        {"text": "a legitimate reason to complain", "trans": "正当的抱怨理由"},
+        {"text": "You have a legitimate reason to complain.", "trans": "你有正当理由抱怨。"},
+        {"text": "The company made a legitimate business deal.", "trans": "这家公司做了一笔合法的生意。"}
+      ]
+    },
+    {
+      "word": "linger",
+      "phonetic": "[ˈlɪŋɡə]",
+      "meanings": [
+        {"pos": "v.", "meaning": "逗留，徘徊，继续存留"},
+        {"pos": "n.", "meaning": "逗留，徘徊"}
+      ],
+      "examples": [
+        {"text": "linger in the memory", "trans": "萦绕在记忆中"},
+        {"text": "The smell of paint lingered in the room.", "trans": "房间里残留着油漆的气味。"},
+        {"text": "She lingered after class to ask a question.", "trans": "她课后留下来问了一个问题。"}
+      ]
+    },
+    {
+      "word": "maintain",
+      "phonetic": "[meɪnˈteɪn]",
+      "meanings": [
+        {"pos": "v.", "meaning": "维持，保养，坚持认为"},
+        {"pos": "n.", "meaning": "维护，保养"}
+      ],
+      "examples": [
+        {"text": "maintain a healthy lifestyle", "trans": "保持健康的生活方式"},
+        {"text": "It is hard to maintain this lifestyle.", "trans": "维持这种生活方式很难。"},
+        {"text": "He maintained that he was innocent.", "trans": "他坚持说自己是无辜的。"}
+      ]
+    },
+    {
+      "word": "manifest",
+      "phonetic": "[ˈmænɪfest]",
+      "meanings": [
+        {"pos": "v.", "meaning": "显示，表明，显现"},
+        {"pos": "a.", "meaning": "明显的，显而易见的"}
+      ],
+      "examples": [
+        {"text": "manifest one's dissatisfaction", "trans": "流露出不满"},
+        {"text": "Stress often manifests itself as illness.", "trans": "压力常以疾病的形式表现出来。"},
+        {"text": "It was manifest to all that the plan had failed.", "trans": "所有人都清楚计划失败了。"}
+      ]
+    },
+    {
+      "word": "mediate",
+      "phonetic": "[ˈmiːdieɪt]",
+      "meanings": [
+        {"pos": "v.", "meaning": "调解，斡旋，居中调停"},
+        {"pos": "n.", "meaning": "调解，调停"}
+      ],
+      "examples": [
+        {"text": "mediate between the two sides", "trans": "在双方之间调解"},
+        {"text": "The UN mediated in the conflict.", "trans": "联合国在这场冲突中进行了调解。"},
+        {"text": "A lawyer helped mediate the dispute.", "trans": "一位律师帮助调解了这起纠纷。"}
+      ]
+    },
+    {
+      "word": "negotiate",
+      "phonetic": "[nɪˈɡəʊʃieɪt]",
+      "meanings": [
+        {"pos": "v.", "meaning": "谈判，协商，议定"},
+        {"pos": "n.", "meaning": "谈判，协商"}
+      ],
+      "examples": [
+        {"text": "negotiate a new contract", "trans": "商定一份新合同"},
+        {"text": "They negotiated a new contract.", "trans": "他们谈妥了一份新合同。"},
+        {"text": "The two sides agreed to negotiate on prices.", "trans": "双方同意就价格进行谈判。"}
+      ]
+    },
+    {
+      "word": "notorious",
+      "phonetic": "[nəʊˈtɔːriəs]",
+      "meanings": [
+        {"pos": "a.", "meaning": "臭名昭著的，声名狼藉的"},
+        {"pos": "n.", "meaning": "臭名昭著"}
+      ],
+      "examples": [
+        {"text": "a notorious criminal", "trans": "一个臭名昭著的罪犯"},
+        {"text": "The area is notorious for heavy traffic.", "trans": "这个地区因交通拥堵而出名。"},
+        {"text": "He is a notorious liar in the office.", "trans": "他是办公室里出了名的撒谎者。"}
+      ]
+    },
+    {
+      "word": "nourish",
+      "phonetic": "[ˈnʌrɪʃ]",
+      "meanings": [
+        {"pos": "v.", "meaning": "滋养，培育，养育"},
+        {"pos": "n.", "meaning": "滋养，营养"}
+      ],
+      "examples": [
+        {"text": "nourish the soil", "trans": "滋养土壤"},
+        {"text": "Good books nourish the mind.", "trans": "好书滋养心灵。"},
+        {"text": "Mother's milk nourishes the baby.", "trans": "母乳滋养婴儿。"}
+      ]
+    },
+    {
+      "word": "obligation",
+      "phonetic": "[ˌɒblɪˈɡeɪʃn]",
+      "meanings": [
+        {"pos": "n.", "meaning": "义务，责任，职责"},
+        {"pos": "a.", "meaning": "有义务的，必须履行的"}
+      ],
+      "examples": [
+        {"text": "a sense of obligation", "trans": "责任感"},
+        {"text": "Parents have a legal obligation to educate their children.", "trans": "父母有教育子女的法律义务。"},
+        {"text": "I feel under no obligation to help him.", "trans": "我觉得没有义务帮助他。"}
+      ]
+    },
+    {
+      "word": "obstacle",
+      "phonetic": "[ˈɒbstəkl]",
+      "meanings": [
+        {"pos": "n.", "meaning": "障碍，阻碍，妨碍"},
+        {"pos": "v.", "meaning": "妨碍，阻挡"}
+      ],
+      "examples": [
+        {"text": "overcome the main obstacle", "trans": "克服主要障碍"},
+        {"text": "Money was the main obstacle.", "trans": "钱是主要的障碍。"},
+        {"text": "Fear of failure is the biggest obstacle to success.", "trans": "对失败的恐惧是成功的最大障碍。"}
+      ]
+    },
+    {
+      "word": "offset",
+      "phonetic": "[ˈɒfset]",
+      "meanings": [
+        {"pos": "v.", "meaning": "抵消，补偿"},
+        {"pos": "n.", "meaning": "抵消，补偿"}
+      ],
+      "examples": [
+        {"text": "offset the carbon emissions", "trans": "抵消碳排放"},
+        {"text": "Higher wages were offset by rising prices.", "trans": "上涨的物价抵消了增加的工资。"},
+        {"text": "The losses were offset by gains elsewhere.", "trans": "损失被其他方面的收益抵消了。"}
+      ]
+    },
+    {
+      "word": "overwhelm",
+      "phonetic": "[ˌəʊvəˈwelm]",
+      "meanings": [
+        {"pos": "v.", "meaning": "压倒，击败，使不知所措"},
+        {"pos": "a.", "meaning": "压倒性的，势不可挡的"}
+      ],
+      "examples": [
+        {"text": "be overwhelmed by work", "trans": "被工作压得喘不过气"},
+        {"text": "She was overwhelmed by the flood of information.", "trans": "她被大量信息弄得不知所措。"},
+        {"text": "The army overwhelmed the enemy forces.", "trans": "军队击垮了敌军。"}
+      ]
+    },
+    {
+      "word": "paradox",
+      "phonetic": "[ˈpærədɒks]",
+      "meanings": [
+        {"pos": "n.", "meaning": "悖论，自相矛盾的事物"},
+        {"pos": "a.", "meaning": "自相矛盾的，似非而是的"}
+      ],
+      "examples": [
+        {"text": "a curious paradox", "trans": "一个奇怪的悖论"},
+        {"text": "It is a paradox that busy people find more time.", "trans": "忙碌的人反而有更多时间，这真是个悖论。"},
+        {"text": "The story is full of paradox.", "trans": "这个故事充满悖论。"}
+      ]
+    },
+    {
+      "word": "participate",
+      "phonetic": "[pɑːˈtɪsɪpeɪt]",
+      "meanings": [
+        {"pos": "v.", "meaning": "参加，参与"},
+        {"pos": "n.", "meaning": "参与者，参加者"}
+      ],
+      "examples": [
+        {"text": "participate in the discussion", "trans": "参与讨论"},
+        {"text": "Everyone is free to participate.", "trans": "每个人都可以自由参加。"},
+        {"text": "All students are encouraged to participate in sports.", "trans": "鼓励所有学生参加体育运动。"}
+      ]
+    },
+    {
+      "word": "perceive",
+      "phonetic": "[pəˈsiːv]",
+      "meanings": [
+        {"pos": "v.", "meaning": "感知，察觉，理解"},
+        {"pos": "n.", "meaning": "感知，知觉"}
+      ],
+      "examples": [
+        {"text": "perceive a change in attitude", "trans": "察觉态度的变化"},
+        {"text": "Children often perceive the world differently.", "trans": "儿童对世界的感知常常不同。"},
+        {"text": "I perceived a slight change in her voice.", "trans": "我察觉到她的声音有细微变化。"}
+      ]
+    },
+    {
+      "word": "prevail",
+      "phonetic": "[prɪˈveɪl]",
+      "meanings": [
+        {"pos": "v.", "meaning": "盛行，获胜，占优势"},
+        {"pos": "a.", "meaning": "盛行的，普遍的"}
+      ],
+      "examples": [
+        {"text": "prevail over difficulties", "trans": "战胜困难"},
+        {"text": "Justice will prevail in the end.", "trans": "正义终将获胜。"},
+        {"text": "This custom still prevails in rural areas.", "trans": "这一习俗在农村地区仍然盛行。"}
+      ]
+    },
+    {
+      "word": "provoke",
+      "phonetic": "[prəˈvəʊk]",
+      "meanings": [
+        {"pos": "v.", "meaning": "激怒，引起，挑衅"},
+        {"pos": "a.", "meaning": "挑衅的，激怒人的"}
+      ],
+      "examples": [
+        {"text": "provoke a violent reaction", "trans": "引起强烈反应"},
+        {"text": "His rude remarks provoked an angry response.", "trans": "他粗鲁的言论激起了愤怒的回应。"},
+        {"text": "Don't provoke the dog; it may bite.", "trans": "不要惹那只狗，它可能会咬人。"}
+      ]
+    },
+    {
+      "word": "qualify",
+      "phonetic": "[ˈkwɒlɪfaɪ]",
+      "meanings": [
+        {"pos": "v.", "meaning": "使合格，取得资格，限定"},
+        {"pos": "a.", "meaning": "有资格的，合格的"}
+      ],
+      "examples": [
+        {"text": "qualify for the scholarship", "trans": "获得奖学金资格"},
+        {"text": "She qualified for the scholarship.", "trans": "她获得了奖学金资格。"},
+        {"text": "His experience qualifies him for the post.", "trans": "他的经验使他有资格担任这一职务。"}
+      ]
+    },
+    {
+      "word": "refute",
+      "phonetic": "[rɪˈfjuːt]",
+      "meanings": [
+        {"pos": "v.", "meaning": "驳斥，反驳，驳倒"},
+        {"pos": "n.", "meaning": "驳斥，反驳"}
+      ],
+      "examples": [
+        {"text": "refute an argument", "trans": "驳斥一个论点"},
+        {"text": "The scientist refuted the false claim with data.", "trans": "这位科学家用数据驳斥了错误的主张。"},
+        {"text": "She refuted his accusation calmly.", "trans": "她平静地驳斥了他的指责。"}
+      ]
+    },
+    {
+      "word": "reluctant",
+      "phonetic": "[rɪˈlʌktənt]",
+      "meanings": [
+        {"pos": "a.", "meaning": "不情愿的，勉强的"},
+        {"pos": "n.", "meaning": "不情愿，勉强"}
+      ],
+      "examples": [
+        {"text": "be reluctant to leave", "trans": "不愿离开"},
+        {"text": "He was reluctant to leave.", "trans": "他不愿离开。"},
+        {"text": "She gave a reluctant yes to the plan.", "trans": "她勉强同意了这个计划。"}
+      ]
+    },
+    {
+      "word": "restrain",
+      "phonetic": "[rɪˈstreɪn]",
+      "meanings": [
+        {"pos": "v.", "meaning": "抑制，约束，制止"},
+        {"pos": "n.", "meaning": "抑制，约束"}
+      ],
+      "examples": [
+        {"text": "restrain one's anger", "trans": "克制怒火"},
+        {"text": "He could hardly restrain his anger.", "trans": "他几乎抑制不住怒火。"},
+        {"text": "New laws restrain the power of the press.", "trans": "新法律约束了新闻界的权力。"}
+      ]
+    },
+    {
+      "word": "rigid",
+      "phonetic": "[ˈrɪdʒɪd]",
+      "meanings": [
+        {"pos": "a.", "meaning": "严格的，死板的，坚硬的"},
+        {"pos": "n.", "meaning": "刚硬，刻板"}
+      ],
+      "examples": [
+        {"text": "rigid rules", "trans": "死板的规定"},
+        {"text": "The school has rigid rules about uniforms.", "trans": "这所学校对校服有严格的规定。"},
+        {"text": "His rigid attitude annoyed everyone.", "trans": "他刻板的态度让所有人恼火。"}
+      ]
+    },
+    {
+      "word": "significant",
+      "phonetic": "[sɪɡˈnɪfɪkənt]",
+      "meanings": [
+        {"pos": "a.", "meaning": "重要的，显著的，有意义的"},
+        {"pos": "n.", "meaning": "意义，重要性"}
+      ],
+      "examples": [
+        {"text": "a significant improvement", "trans": "显著的提高"},
+        {"text": "There was a significant improvement.", "trans": "有了显著的提高。"},
+        {"text": "This is a significant step towards peace.", "trans": "这是迈向和平的重要一步。"}
+      ]
+    },
+    {
+      "word": "skeptical",
+      "phonetic": "[ˈskeptɪkl]",
+      "meanings": [
+        {"pos": "a.", "meaning": "怀疑的，多疑的"},
+        {"pos": "n.", "meaning": "怀疑，怀疑态度"}
+      ],
+      "examples": [
+        {"text": "be skeptical about the claim", "trans": "对这一说法持怀疑态度"},
+        {"text": "Many scientists are skeptical about the new theory.", "trans": "许多科学家对新理论持怀疑态度。"},
+        {"text": "I am skeptical of his promises.", "trans": "我对他的承诺持怀疑态度。"}
+      ]
+    },
+    {
+      "word": "spontaneous",
+      "phonetic": "[spɒnˈteɪniəs]",
+      "meanings": [
+        {"pos": "a.", "meaning": "自发的，自然的，非勉强的"},
+        {"pos": "n.", "meaning": "自发行为，自发"}
+      ],
+      "examples": [
+        {"text": "spontaneous applause", "trans": "自发的掌声"},
+        {"text": "The crowd burst into spontaneous applause.", "trans": "人群爆发出自发的掌声。"},
+        {"text": "Their meeting was completely spontaneous.", "trans": "他们的相遇完全是偶然的、自发的。"}
+      ]
+    },
+    {
+      "word": "sufficient",
+      "phonetic": "[səˈfɪʃnt]",
+      "meanings": [
+        {"pos": "a.", "meaning": "足够的，充分的"},
+        {"pos": "n.", "meaning": "充分，足够"}
+      ],
+      "examples": [
+        {"text": "sufficient evidence", "trans": "充分的证据"},
+        {"text": "We have sufficient food for the trip.", "trans": "我们有足够的旅行食物。"},
+        {"text": "There is sufficient evidence to support the claim.", "trans": "有充分的证据支持这一说法。"}
+      ]
+    },
+    {
+      "word": "susceptible",
+      "phonetic": "[səˈseptəbl]",
+      "meanings": [
+        {"pos": "a.", "meaning": "易受影响的，敏感的，易患……的"},
+        {"pos": "n.", "meaning": "易感者，易受影响者"}
+      ],
+      "examples": [
+        {"text": "be susceptible to colds", "trans": "容易感冒"},
+        {"text": "Children are susceptible to bad influences.", "trans": "儿童容易受到不良影响。"},
+        {"text": "Elderly people are particularly susceptible to the disease.", "trans": "老年人尤其容易患这种疾病。"}
+      ]
+    },
+    {
+      "word": "tentative",
+      "phonetic": "[ˈtentətɪv]",
+      "meanings": [
+        {"pos": "a.", "meaning": "试探性的，暂定的，犹豫的"},
+        {"pos": "n.", "meaning": "试验，假设"}
+      ],
+      "examples": [
+        {"text": "a tentative plan", "trans": "一个初步的计划"},
+        {"text": "We reached a tentative agreement last week.", "trans": "上周我们达成了初步协议。"},
+        {"text": "The first steps were cautious and tentative.", "trans": "最初的几步小心而试探。"}
+      ]
+    },
+    {
+      "word": "tolerate",
+      "phonetic": "[ˈtɒləreɪt]",
+      "meanings": [
+        {"pos": "v.", "meaning": "容忍，忍受，容许"},
+        {"pos": "n.", "meaning": "容忍，忍受"}
+      ],
+      "examples": [
+        {"text": "tolerate the noise", "trans": "容忍噪音"},
+        {"text": "I cannot tolerate this noise.", "trans": "我受不了这噪音。"},
+        {"text": "The school does not tolerate cheating.", "trans": "这所学校不容忍作弊行为。"}
+      ]
+    },
+    {
+      "word": "transmit",
+      "phonetic": "[trænsˈmɪt]",
+      "meanings": [
+        {"pos": "v.", "meaning": "传输，传播，传染"},
+        {"pos": "n.", "meaning": "传送，传播"}
+      ],
+      "examples": [
+        {"text": "transmit the virus", "trans": "传播病毒"},
+        {"text": "Mosquitoes can transmit the disease.", "trans": "蚊子能传播这种疾病。"},
+        {"text": "The message was transmitted by satellite.", "trans": "这一信息通过卫星传送。"}
+      ]
+    },
+    {
+      "word": "trigger",
+      "phonetic": "[ˈtrɪɡə]",
+      "meanings": [
+        {"pos": "v.", "meaning": "引发，触发，导致"},
+        {"pos": "n.", "meaning": "扳机，诱因"}
+      ],
+      "examples": [
+        {"text": "trigger an economic crisis", "trans": "引发经济危机"},
+        {"text": "The news triggered a heated debate.", "trans": "这一消息引发了激烈的辩论。"},
+        {"text": "Smoke triggers the fire alarm.", "trans": "烟雾会触发火警报警器。"}
+      ]
+    },
+    {
+      "word": "unable",
+      "phonetic": "[əˈnʌbl]",
+      "meanings": [
+        {"pos": "a.", "meaning": "不能的，不会的，无能力的"},
+        {"pos": "n.", "meaning": "无能力，不能"}
+      ],
+      "examples": [
+        {"text": "be unable to reach the apple", "trans": "够不着苹果"},
+        {"text": "The boy is unable to reach the apple.", "trans": "男孩够不着苹果。"},
+        {"text": "He was unable to attend the meeting.", "trans": "他未能参加会议。"}
+      ]
+    },
+    {
+      "word": "ultimate",
+      "phonetic": "[ˈʌltɪmət]",
+      "meanings": [
+        {"pos": "a.", "meaning": "最终的，根本的，首要的"},
+        {"pos": "n.", "meaning": "终极，顶点"}
+      ],
+      "examples": [
+        {"text": "the ultimate goal", "trans": "最终目标"},
+        {"text": "Their ultimate goal is to win the championship.", "trans": "他们的最终目标是赢得冠军。"},
+        {"text": "The ultimate decision rests with the manager.", "trans": "最终决定权在经理手里。"}
+      ]
+    },
+    {
+      "word": "undergo",
+      "phonetic": "[ˌʌndəˈɡəʊ]",
+      "meanings": [
+        {"pos": "v.", "meaning": "经历，承受，接受"},
+        {"pos": "n.", "meaning": "经历，经受"}
+      ],
+      "examples": [
+        {"text": "undergo an operation", "trans": "接受手术"},
+        {"text": "The old bridge must undergo safety checks.", "trans": "这座老桥必须接受安全检查。"},
+        {"text": "She underwent intensive training last year.", "trans": "她去年接受了强化训练。"}
+      ]
+    },
+    {
+      "word": "underestimate",
+      "phonetic": "[ˌʌndərˈestɪmeɪt]",
+      "meanings": [
+        {"pos": "v.", "meaning": "低估，估计不足"},
+        {"pos": "n.", "meaning": "低估"}
+      ],
+      "examples": [
+        {"text": "underestimate the cost", "trans": "低估成本"},
+        {"text": "Never underestimate your opponent.", "trans": "永远不要低估你的对手。"},
+        {"text": "The company underestimated the demand for its product.", "trans": "这家公司低估了其产品的需求。"}
+      ]
+    },
+    {
+      "word": "valid",
+      "phonetic": "[ˈvælɪd]",
+      "meanings": [
+        {"pos": "a.", "meaning": "有效的，有根据的，合法的"},
+        {"pos": "n.", "meaning": "有效性，效力"}
+      ],
+      "examples": [
+        {"text": "a valid passport", "trans": "一本有效的护照"},
+        {"text": "Your ticket is valid for three months.", "trans": "你的票三个月内有效。"},
+        {"text": "She raised a valid point at the meeting.", "trans": "她在会上提出了一个有根据的观点。"}
+      ]
+    },
+    {
+      "word": "vaccine",
+      "phonetic": "[ˈvæksiːn]",
+      "meanings": [
+        {"pos": "n.", "meaning": "牛痘苗，疫苗"},
+        {"pos": "a.", "meaning": "疫苗的，牛痘的"}
+      ],
+      "examples": [
+        {"text": "influenza vaccine", "trans": "流感疫苗"},
+        {"text": "The vaccine protects against the virus.", "trans": "这种疫苗能抵抗病毒。"}
+      ]
+    },
+    {
+      "word": "verify",
+      "phonetic": "[ˈverɪfaɪ]",
+      "meanings": [
+        {"pos": "v.", "meaning": "核实，查证，证明"},
+        {"pos": "n.", "meaning": "核实，查证"}
+      ],
+      "examples": [
+        {"text": "verify the information", "trans": "核实信息"},
+        {"text": "Please verify your email address.", "trans": "请核实您的电子邮件地址。"},
+        {"text": "Scientists verified the results through repeated tests.", "trans": "科学家通过反复实验核实了结果。"}
+      ]
+    },
+    {
+      "word": "vigorous",
+      "phonetic": "[ˈvɪɡərəs]",
+      "meanings": [
+        {"pos": "a.", "meaning": "有力的，精力充沛的"},
+        {"pos": "ad.", "meaning": "有力地，精神饱满地"}
+      ],
+      "examples": [
+        {"text": "vigorous exercise", "trans": "剧烈运动"},
+        {"text": "Regular vigorous exercise keeps you healthy.", "trans": "经常进行剧烈运动能保持健康。"},
+        {"text": "The government took vigorous action against crime.", "trans": "政府对犯罪采取了有力的行动。"}
+      ]
+    },
+    {
+      "word": "warrant",
+      "phonetic": "[ˈwɒrənt]",
+      "meanings": [
+        {"pos": "v.", "meaning": "使有必要，保证，值得"},
+        {"pos": "n.", "meaning": "授权令，正当理由"}
+      ],
+      "examples": [
+        {"text": "warrant further investigation", "trans": "有必要进一步调查"},
+        {"text": "The situation warrants immediate action.", "trans": "局势需要立即采取行动。"},
+        {"text": "Police obtained a search warrant from the court.", "trans": "警方获得了法院颁发的搜查令。"}
+      ]
+    },
+    {
+      "word": "wither",
+      "phonetic": "[ˈwɪðə]",
+      "meanings": [
+        {"pos": "v.", "meaning": "枯萎，凋谢，使萎缩"},
+        {"pos": "a.", "meaning": "凋谢的，干枯的"}
+      ],
+      "examples": [
+        {"text": "wither in the drought", "trans": "在干旱中枯萎"},
+        {"text": "The crops withered for lack of rain.", "trans": "庄稼因缺少雨水而枯萎。"},
+        {"text": "The once booming industry began to wither.", "trans": "曾经繁荣的行业开始衰落。"}
+      ]
+    }
+  ]
+}
