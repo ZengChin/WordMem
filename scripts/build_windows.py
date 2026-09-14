@@ -24,6 +24,11 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 ISL = ROOT / "packaging" / "Languages" / "ChineseSimplified.isl"
 
+# CI（Windows runner）控制台默认 cp1252，print 中文会 UnicodeEncodeError，统一改 UTF-8
+for _stream in (sys.stdout, sys.stderr):
+    if hasattr(_stream, "reconfigure"):
+        _stream.reconfigure(encoding="utf-8", errors="replace")
+
 # 中文语言包下载源（按序尝试，全部失败则安装向导回退英文，不阻断构建）
 ISL_URLS = (
     "https://cdn.jsdelivr.net/gh/jrsoftware/issrc@main/"
