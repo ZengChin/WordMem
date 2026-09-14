@@ -112,6 +112,10 @@ class Repository:
         self._conn.execute("DELETE FROM study_state")
         self._conn.execute("DELETE FROM words")
         self._conn.execute("DELETE FROM books")
+        # 旧库残留的会话快照与已背组数一并清除，避免脏数据影响新库
+        self._conn.execute(
+            "DELETE FROM meta WHERE key IN "
+            "('session_new','session_review','completed_batches')")
         self._conn.commit()
 
     def add_book(self, name: str, description: str = "") -> int:

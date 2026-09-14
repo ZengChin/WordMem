@@ -247,6 +247,7 @@ class SpellView(QWidget):
         if self._locked or not self.words or self.index >= len(self.words):
             return
         word = self.words[self.index]
+        self._word_attempted = True   # 看过提示即不计入“一次拼对”
         self._set_feedback(word.text, _COLOR_HINT, 2000,
                            lambda: self._hide_feedback(clear_input=False))
 

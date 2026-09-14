@@ -180,6 +180,7 @@ class HomeView(QWidget):
 
         dlg = SettingsDialog(self.ctx, self.window())
         dlg.exec()
+        self.refresh()   # 弹窗内可能重置进度/改动配置，关闭后刷新首页数据
 
     def _open_stats(self) -> None:
         from wordmem.ui.views.dialogs import StatsDialog

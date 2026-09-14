@@ -88,8 +88,9 @@ def convert(apkg_path: str, out_path: str,
             book_name: str = DEFAULT_BOOK,
             description: str = DEFAULT_DESC) -> int:
     tmp = tempfile.mkdtemp(prefix="apkg_conv_")
-    zf = zipfile.ZipFile(apkg_path)
-    conn = sqlite3.connect(_pick_db(zf, tmp))
+    with zipfile.ZipFile(apkg_path) as zf:      # 用 with 确保 ZipFile 关闭
+        db_path = _pick_db(zf, tmp)
+    conn = sqlite3.connect(db_path)
     conn.row_factory = sqlite3.Row
 
     idx = _field_index(conn)
@@ -130,7 +131,9 @@ def convert(apkg_path: str, out_path: str,
 
     payload = {"book": {"name": book_name, "description": description},
                "words": words}
-    os.makedirs(os.path.dirname(out_path), exist_ok=True)
+    out_dir = os.path.dirname(out_path)
+    if out_dir:                                 # 纯文件名时 dirname 为空，跳过建目录
+        os.makedirs(out_dir, exist_ok=True)
     with open(out_path, "w", encoding="utf-8") as fp:
         json.dump(payload, fp, ensure_ascii=False, indent=1)
     print(f"imported={len(words)} skipped={skipped} -> {out_path}")
