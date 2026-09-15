@@ -10,8 +10,8 @@
 [![PySide6](https://img.shields.io/badge/GUI-PySide6-41CD52?style=flat-square&logo=qt&logoColor=white)](https://doc.qt.io/qtforpython/)
 [![Platform](https://img.shields.io/badge/Platform-Windows-0078D6?style=flat-square&logo=windows&logoColor=white)](https://github.com/ZengChin/WordMem/releases)
 
-背单词 · 间隔重复 · SM-2 记忆算法 · 艾宾浩斯遗忘曲线 · 雅思词汇 · 考研词汇 ·
-离线发音 · 便携绿色软件 · PySide6 · SQLite
+背单词 · 间隔重复 · SM-2 记忆算法 · 艾宾浩斯遗忘曲线 · 雅思 / CET4 / CET6 / 考研 ·
+多词库切换 · 自定义导入 · 离线发音 · 便携绿色软件 · PySide6 · SQLite
 
 [功能特性](#功能特性) · [下载安装](#下载安装) · [快速上手](#快速上手) · [自定义词库](#自定义词库) · [开发构建](#开发构建)
 
@@ -70,6 +70,26 @@ WordMem 是一款基于 **PySide6 + SQLite** 的桌面背单词应用，界面�
   已掌握词到期后仍会周期性唤醒复习，忘记则降级重建。
 - **错词重现**：答错的词每隔若干词（默认 2，可在设置调整）在组内重现，直到答对为止。
 
+### 词库选择与导入
+
+<table>
+  <tr>
+    <td align="center"><img src="docs/images/book_manage.png" width="250" alt="词书管理"><br><b>词书管理</b><br>当前词书进度 + 一键切换</td>
+    <td align="center"><img src="docs/images/book_import.png" width="250" alt="导入词书"><br><b>导入词书</b><br>拖拽导入 + 推荐下载源</td>
+  </tr>
+</table>
+
+- **多词库独立进度**：内置雅思 / CET4 / CET6 / 考研四本词书；每本词书的学习进度、
+  复习计划相互独立，互不干扰，切换即生效。
+- **一键切换词书**：首页点词书卡片右上角进入「词书」管理页，顶部展示当前词书
+  （名称 / 描述 / 已学 / 待复习 / 进度条），下方按「内置词书 / 我的导入」分组列出
+  全部词书，点行或「切换」按钮即可换书，当前书高亮「使用中」。
+- **导入自定义词书**：点「导入词书」进入导入页，点击或拖拽文件即可，支持
+  **JSON / JSONL / TXT / CSV / Anki .apkg**；格式可自动识别，`.apkg` 会自动映射
+  单词 / 音标 / 释义 / 例句字段。导入的词书归入「我的导入」，可单独删除（连同其学习进度）。
+- **推荐下载源**：导入页内置 AnkiWeb 共享牌组、KyleBing/english-vocabulary、
+  skywind3000/ECDICT 等入口，一键跳转下载词库文件。
+
 ### 窗口与外观
 
 无边框圆角窗口，右上角依次为：
@@ -83,8 +103,8 @@ WordMem 是一款基于 **PySide6 + SQLite** 的桌面背单词应用，界面�
 - **离线发音**：Windows SAPI 朗读（pyttsx3），无需联网；未安装时自动隐藏该能力。
 - **便携数据**：数据库、配置、日志全部存放在主程序同目录的 `WordMem/` 文件夹，
   整个目录拷走即完成迁移，U 盘可用。
-- **内置词库**：雅思核心词汇 4127 词（含音标 / 释义 / 例句），另附考研高频精选词库；
-  支持从 Anki 词库包转换自定义词库（见下文）。
+- **内置词库**：雅思 4127 / CET4 4027 / CET6 3991 / 考研 5491 词（含音标 / 释义 / 多例句），
+  可在「词书」页自由切换；亦支持导入自定义词库（见[词库选择与导入](#词库选择与导入)）。
 
 ## 下载安装
 
@@ -114,10 +134,12 @@ python -m venv .venv
 
 ## 自定义词库
 
-词库为 JSON 格式（音标 / 释义 / 例句）。`scripts/apkg_to_words.py` 可将
-Anki 词库包（`.apkg`）转换为该格式（用法见脚本内 docstring）。
+最简单的方式是在软件内导入：「词书」页 → 「导入词书」，点击或拖拽文件即可，
+支持 JSON / JSONL / TXT / CSV / Anki `.apkg`（详见[词库选择与导入](#词库选择与导入)）。
 
-更换默认词库后再次启动，软件会检测到词库变化并清空旧库重新导入。
+面向批量 / 离线场景，`scripts/apkg_to_words.py` 可把 Anki 词库包（`.apkg`）
+转换为 WordMem JSON 格式（音标 / 释义 / 例句，用法见脚本内 docstring），
+再在导入页选择「WordMem JSON」格式导入。
 
 ## 数据与配置
 

@@ -138,6 +138,15 @@ def main() -> int:
     OUT_DIR.mkdir(parents=True, exist_ok=True)
     app = QApplication(sys.argv)
 
+    # offscreen 平台不枚举系统字体（QFontDatabase.families() 为空），
+    # 中文会渲染成豆腐块；显式载入系统 CJK 字体，供 GLOBAL_QSS 的
+    # "Microsoft YaHei" 命中（真实显示环境本就自带，载入亦无副作用）
+    from PySide6.QtGui import QFontDatabase
+    for _fp in (r"C:\Windows\Fonts\msyh.ttc", r"C:\Windows\Fonts\simhei.ttf",
+                r"C:\Windows\Fonts\simsun.ttc"):
+        if Path(_fp).exists() and QFontDatabase.addApplicationFont(_fp) != -1:
+            break
+
     ctx = build_context()
     # 截图用干净稳定的配置：不发音、不自动折叠、非透明模式、满不透明度
     ctx.config.auto_pronounce = False
@@ -174,7 +183,15 @@ def main() -> int:
     window._open_word_list()
     _grab(window, "word_list.png")
 
-    # 6. 设置弹窗（首页左上齿轮）：Popup 独立窗口，合成到首页之上
+    # 6. 词书管理页（当前词书 + 内置/导入词书列表，一键切换）
+    window._open_book_manage()
+    _grab(window, "book_manage.png")
+
+    # 7. 导入词书页（拖拽/选择文件 + 格式 + 推荐下载源）
+    window._open_import_book()
+    _grab(window, "book_import.png")
+
+    # 8. 设置弹窗（首页左上齿轮）：Popup 独立窗口，合成到首页之上
     from wordmem.ui.views.dialogs import SettingsDialog
 
     window.stack.setCurrentWidget(window.home_view)
@@ -204,17 +221,17 @@ def main() -> int:
     desktop = _make_desktop(window.width() + 160, window.height() + 140)
     win_pos = QPoint(80, 70)
 
-    # 7. 隐形模式·首页
+    # 9. 隐形模式·首页
     _grab_over_desktop(window, desktop, win_pos, "home_ghost.png")
 
-    # 8. 隐形模式·背单词页（恢复此前的会话快照，回到出题态）
+    # 10. 隐形模式·背单词页（恢复此前的会话快照，回到出题态）
     window._start_session("new")
     if window.stack.currentWidget() is window.study_view and window.study_view.session:
         _grab_over_desktop(window, desktop, win_pos, "study_ghost.png")
     else:
         print("no session available, skip ghost study shot")
 
-    # 9. 隐形模式·自动隐藏动图（鼠标移出/移入）
+    # 11. 隐形模式·自动隐藏动图（鼠标移出/移入）
     window._go_home()
     window.title_bar.btn_fold.setChecked(True)    # 触发 _on_fold：auto_hide=True
     window._auto_hide_timer.stop()                # 停掉真实鼠标轮询，改为手动驱动
