@@ -43,7 +43,25 @@ def resource_data_dir() -> Path:
 
 
 def seed_words_file() -> Path:
+    """默认词库种子（向后兼容，新代码应使用 BookManager）。"""
     return resource_data_dir() / "ielts_words.json"
+
+
+def builtin_registry_file() -> Path:
+    """内置词书清单 JSON。"""
+    return resource_data_dir() / "book_registry.json"
+
+
+def builtin_book_file(filename: str) -> Path:
+    """内置词书 JSON 路径（按文件名）。"""
+    return resource_data_dir() / filename
+
+
+def user_books_dir() -> Path:
+    """用户导入词书的存放目录。"""
+    path = app_data_dir() / "books"
+    path.mkdir(parents=True, exist_ok=True)
+    return path
 
 
 def is_frozen() -> bool:

@@ -25,6 +25,7 @@ from wordmem.core.models import (  # noqa: E402
     THIRD_INTERVAL,
     next_schedule,
 )
+from wordmem.core.book_manager import BookManager  # noqa: E402
 from wordmem.core.repository import Repository  # noqa: E402
 from wordmem.core.study_service import StudyService  # noqa: E402
 
@@ -293,31 +294,41 @@ class MigrationTestCase(unittest.TestCase):
 
 
 class SeedTestCase(unittest.TestCase):
-    """默认词库（雅思词汇）播种、幂等与库切换重播。"""
+    """内置词书注册、默认词书播种（幂等）与多词书切换。"""
 
     def test_seed_loads_ielts_library(self) -> None:
+        """BookManager 注册内置词书并设置默认活动词书（雅思词汇）。"""
         repo = Repository(":memory:")
-        repo.ensure_seeded()
+        bm = BookManager(repo)
+        bm.register_builtin_books()
+        bm.ensure_default_active()
         self.assertEqual(repo.get_book().name, "雅思词汇")
         self.assertEqual(repo.count_words(), 4127)
-        repo.ensure_seeded()          # 已是当前默认词库 -> 幂等，不重复导入
+        bm.ensure_default_active()    # 已有活动词书 -> 幂等，不重复导入
         self.assertEqual(repo.count_words(), 4127)
         repo.close()
 
-    def test_switch_default_library_clears_old(self) -> None:
+    def test_switch_book_filters_by_active(self) -> None:
+        """切换活动词书后，查询只看新词书的词，旧词书数据保留但不可见。"""
         repo = Repository(":memory:")
-        old_book = repo.add_book("旧词书", "")
-        repo.add_words(old_book, [
-            {"word": "old", "phonetic": "", "meanings": [], "examples": []}])
-        state = next_schedule(None, GRADE_GOOD, date.today())
-        state.word_id = 1
-        repo.save_state(state, True, date.today())
-        self.assertEqual(repo.count_learned(), 1)
-
-        repo.ensure_seeded()          # 默认词库名不一致 -> 清空旧库后重播
-        self.assertEqual(repo.get_book().name, "雅思词汇")
+        bm = BookManager(repo)
+        bm.register_builtin_books()
+        bm.ensure_default_active()
+        default_id = repo.get_active_book_id()
         self.assertEqual(repo.count_words(), 4127)
-        self.assertEqual(repo.count_learned(), 0)
+
+        # 新增第二本词书并导入 1 个词
+        second_id = repo.add_book("自定义", "测试", source="imported")
+        repo.add_words(second_id, [
+            {"word": "custom1", "phonetic": "", "meanings": [], "examples": []}])
+        # 切换到第二本词书：查询只看新词书
+        bm.switch_book(second_id)
+        self.assertEqual(repo.count_words(), 1)
+        self.assertEqual(repo.get_book().name, "自定义")
+
+        # 切换回默认词书：原数据仍在
+        bm.switch_book(default_id)
+        self.assertEqual(repo.count_words(), 4127)
         repo.close()
 
 

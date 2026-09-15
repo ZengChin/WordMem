@@ -11,6 +11,7 @@ from PySide6.QtWidgets import QApplication, QMessageBox
 from wordmem import __app_name__, __version__
 from wordmem.config.paths import log_dir
 from wordmem.config.settings import ConfigManager
+from wordmem.core.book_manager import BookManager
 from wordmem.core.repository import Repository
 from wordmem.core.study_service import StudyService
 from wordmem.core.tts import speaker as tts_speaker
@@ -45,13 +46,16 @@ def _excepthook(exc_type, exc, tb) -> None:  # pragma: no cover
 
 
 def build_context() -> AppContext:
-    """依赖装配：配置 -> 仓库（含首次播种）-> 服务 -> 发音。"""
+    """依赖装配：配置 -> 仓库 -> 词书管理 -> 服务 -> 发音。"""
     configs = ConfigManager()
     repo = Repository(db_path=_db_path())
-    repo.ensure_seeded()
+    book_mgr = BookManager(repo)
+    book_mgr.register_builtin_books()
+    book_mgr.ensure_default_active()
     service = StudyService(repo, batch_size=configs.config.batch_size,
                            requeue_gap=configs.config.requeue_gap)
-    return AppContext(repo, service, configs, tts_speaker)
+    return AppContext(repo, service, configs, tts_speaker,
+                     book_manager=book_mgr)
 
 
 def _db_path():

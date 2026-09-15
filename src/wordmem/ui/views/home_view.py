@@ -107,6 +107,7 @@ class HomeView(QWidget):
 
     start_session = Signal(str)  # "new" / "review"
     word_list_requested = Signal()
+    book_manage_requested = Signal()
 
     def __init__(self, ctx, parent=None) -> None:
         super().__init__(parent)
@@ -158,7 +159,7 @@ class HomeView(QWidget):
     # ------------------------------------------------------------ 数据刷新
     def refresh(self) -> None:
         summary = self.ctx.service.home_summary()
-        book = self.ctx.repo.get_book()
+        book = self.ctx.repo.get_active_book()
         total, learned = summary["total"], summary["learned"]
 
         self.book_card.name.setText(book.name if book else "词书")
@@ -188,9 +189,7 @@ class HomeView(QWidget):
         StatsDialog(self.ctx, self.window()).exec()
 
     def _open_book_info(self) -> None:
-        from wordmem.ui.views.dialogs import BookInfoDialog
-
-        BookInfoDialog(self.ctx, self.window()).exec()
+        self.book_manage_requested.emit()
 
     def _open_word_list(self) -> None:
         self.word_list_requested.emit()

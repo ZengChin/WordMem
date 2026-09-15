@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""对话框：学习统计 / 设置 / 词书详情。统一无边框卡片风格。"""
+"""对话框：学习统计 / 设置。统一无边框卡片风格。"""
 from __future__ import annotations
 
 from datetime import date
@@ -184,7 +184,7 @@ class SettingsDialog(BaseDialog):
 
     @staticmethod
     def _stepper(lo: int, hi: int, value: int) -> tuple[QSpinBox, QWidget]:
-        """“− 数值 +”步进器。"""
+        """"- 数值 +"步进器。"""
         spin = QSpinBox()
         spin.setRange(lo, hi)
         spin.setValue(value)
@@ -226,29 +226,3 @@ class SettingsDialog(BaseDialog):
             self.ctx.repo.reset_progress()
             QMessageBox.information(self, "完成", "学习进度已重置。")
             self.accept()
-
-
-class BookInfoDialog(BaseDialog):
-    """词书详情。"""
-
-    def __init__(self, ctx, parent=None) -> None:
-        super().__init__("词书详情", parent, (360, 240))
-        book = ctx.repo.get_book()
-        summary = ctx.service.home_summary()
-
-        name = QLabel(book.name)
-        name.setStyleSheet(
-            f"color:{theme.GREEN}; font-size:18px; font-weight:600;")
-        desc = QLabel(book.description)
-        desc.setWordWrap(True)
-        desc.setStyleSheet(f"color:{theme.INK}; font-size:14px;")
-        info = QLabel(
-            f"共 {summary['total']} 词 · 已学 {summary['learned']} 词 · "
-            f"待复习 {summary['review_left']} 词")
-        info.setStyleSheet(f"color:{theme.INK_SOFT}; font-size:13px;")
-
-        self.body.addWidget(name)
-        self.body.addWidget(desc)
-        self.body.addSpacing(6)
-        self.body.addWidget(info)
-        self.body.addStretch(1)

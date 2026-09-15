@@ -53,7 +53,18 @@ class StudyService:
         return session
 
     # ------------------------------------------------------------ 会话持久化
-    _SESSION_KEYS = {"new": "session_new", "review": "session_review"}
+    def _session_key(self, mode: str) -> str:
+        """会话快照的 meta 键，按活动词书隔离。
+
+        多词书共用一张 words 表、word_id 全局唯一，若快照不区分词书，
+        切换词书后 resume 仍会命中旧词书的词（get_word 照样取得到），把进度
+        写进旧词书，导致当前词书复习数恒为 0。故键名带上 active_book_id。
+        """
+        return f"session_{mode}:{self.repo.get_active_book_id()}"
+
+    def _batches_key(self) -> str:
+        """已背组数的 meta 键，同样按活动词书隔离（复习入口门槛）。"""
+        return f"completed_batches:{self.repo.get_active_book_id()}"
 
     def save_session(self, session: StudySession) -> None:
         """快照当前会话：单词顺序（含重现副本）、进度与统计，供中途退出后恢复。"""
@@ -68,15 +79,15 @@ class StudyService:
                 for it in session.items
             ],
         }
-        self.repo.set_meta(self._SESSION_KEYS[session.mode],
+        self.repo.set_meta(self._session_key(session.mode),
                            json.dumps(data, ensure_ascii=False))
 
     def clear_session(self, mode: str) -> None:
-        self.repo.set_meta(self._SESSION_KEYS[mode], "")
+        self.repo.set_meta(self._session_key(mode), "")
 
     def resume_session(self, mode: str) -> Optional[StudySession]:
         """恢复上次未完成的会话；无快照或已失效时返回 None。"""
-        raw = self.repo.get_meta(self._SESSION_KEYS[mode])
+        raw = self.repo.get_meta(self._session_key(mode))
         if not raw:
             return None
         try:
@@ -108,9 +119,9 @@ class StudyService:
         return session
 
     def completed_batches(self) -> int:
-        """已完整背完的学新词组数（复习入口门槛）。"""
+        """当前活动词书已完整背完的学新词组数（复习入口门槛）。"""
         try:
-            return int(self.repo.get_meta("completed_batches") or 0)
+            return int(self.repo.get_meta(self._batches_key()) or 0)
         except ValueError:
             return 0
 
@@ -118,7 +129,7 @@ class StudyService:
         """会话完成：清除快照；学新词整组背完记为一次已背组数。"""
         self.clear_session(session.mode)
         if session.mode == "new":
-            self.repo.set_meta("completed_batches",
+            self.repo.set_meta(self._batches_key(),
                                str(self.completed_batches() + 1))
 
     # ------------------------------------------------------------ 判分调度
@@ -158,8 +169,8 @@ class StudyService:
                 session.passed += 1
             else:
                 session.failed += 1
-        if passed:                     # 进度：每个词答对一次即计入（含重现副本）
-            session.done += 1
+        if passed:
+            session.done += 1          # 进度：仅「记住」才推进；答错会重现，不计入
         return GradeResult(state=state, requeued=requeued)
 
     def _requeue_offset(self) -> int:

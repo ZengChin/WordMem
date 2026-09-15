@@ -31,6 +31,9 @@ class Book:
     id: int
     name: str
     description: str
+    source: str = "builtin"      # builtin / imported
+    file_path: str = ""          # imported 词书的源文件路径
+    word_count: int = 0          # 词数（冗余字段，便于列表展示）
 
 
 @dataclass
@@ -89,7 +92,7 @@ class StudySession:
     index: int = 0                  # 当前下标（沿含重现副本的完整序列推进）
     passed: int = 0                 # 首次作答即答对的唯一词数
     failed: int = 0                 # 首次作答答错（需组内巩固）的唯一词数
-    done: int = 0                   # 已答对（含重现）的词数，用于进度展示
+    done: int = 0                   # 已记住（答对）的唯一词数，用于进度展示
 
     @property
     def total(self) -> int:
@@ -98,7 +101,7 @@ class StudySession:
 
     @property
     def position(self) -> int:
-        """人类可读进度，如 3 / 20；答错重现不改变已答对进度。"""
+        """人类可读进度（已记住词数 + 1），如 3 / 20。"""
         return min(self.done + 1, self.total)
 
     @property

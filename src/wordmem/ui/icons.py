@@ -187,6 +187,16 @@ def _draw(name: str, p: QPainter) -> None:
     elif name == "plus":  # 增加
         p.drawLine(QPointF(s * 0.30, s * 0.5), QPointF(s * 0.70, s * 0.5))
         p.drawLine(QPointF(s * 0.5, s * 0.30), QPointF(s * 0.5, s * 0.70))
+    elif name == "upload":  # 上传：向上箭头 + 底座
+        p.drawLine(QPointF(s * 0.50, s * 0.52), QPointF(s * 0.50, s * 0.24))
+        p.drawLine(QPointF(s * 0.50, s * 0.24), QPointF(s * 0.36, s * 0.38))
+        p.drawLine(QPointF(s * 0.50, s * 0.24), QPointF(s * 0.64, s * 0.38))
+        p.drawLine(QPointF(s * 0.30, s * 0.64), QPointF(s * 0.70, s * 0.64))
+    elif name == "download":  # 下载：向下箭头 + 底座
+        p.drawLine(QPointF(s * 0.50, s * 0.24), QPointF(s * 0.50, s * 0.52))
+        p.drawLine(QPointF(s * 0.50, s * 0.52), QPointF(s * 0.36, s * 0.38))
+        p.drawLine(QPointF(s * 0.50, s * 0.52), QPointF(s * 0.64, s * 0.38))
+        p.drawLine(QPointF(s * 0.30, s * 0.64), QPointF(s * 0.70, s * 0.64))
     else:  # 兜底：实心圆
         p.setBrush(QColor(p.pen().color()))
         p.setPen(Qt.NoPen)

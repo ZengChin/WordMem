@@ -87,10 +87,10 @@ def main() -> None:
     check(sv._answer_mode, "点击不认识后进入作答态")
     check(not sv.btn_left.isVisible(), "不认识路径下没有记住了按钮")
     check(sv.btn_right.text() == "下一词", "不认识路径下仅剩下一词")
-    total_before = sv.session.total
+    total_before = len(sv.session.items)
     sv.btn_right.click()         # 下一词 -> 判错并在组内重排
     check(not sv._answer_mode and sv.session.position == 3, "判分后前进到第 3 词")
-    check(sv.session.total == total_before + 1, "答错的词在组内重排")
+    check(len(sv.session.items) == total_before + 1, "答错的词在组内重排")
 
     # ---- 字号切换 ----
     old_level = ctx.config.font_level

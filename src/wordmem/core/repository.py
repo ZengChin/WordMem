@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""数据访问层：SQLite 持久化与词库种子初始化。"""
+"""数据访问层：SQLite 持久化与多词书管理。"""
 from __future__ import annotations
 
 import json
@@ -8,7 +8,6 @@ from datetime import date
 from pathlib import Path
 from typing import Iterable, Optional
 
-from wordmem.config.paths import seed_words_file
 from wordmem.core.models import (
     STATUS_LEARNING,
     STATUS_MASTERED,
@@ -23,7 +22,10 @@ _SCHEMA = """
 CREATE TABLE IF NOT EXISTS books (
     id          INTEGER PRIMARY KEY AUTOINCREMENT,
     name        TEXT NOT NULL,
-    description TEXT NOT NULL DEFAULT ''
+    description TEXT NOT NULL DEFAULT '',
+    source      TEXT NOT NULL DEFAULT 'builtin',
+    file_path   TEXT,
+    word_count  INTEGER NOT NULL DEFAULT 0
 );
 CREATE TABLE IF NOT EXISTS words (
     id       INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -72,7 +74,11 @@ class Repository:
 
     # ------------------------------------------------------------------ 迁移
     def _migrate(self) -> None:
-        """为旧版本数据库补齐 SM-2 新列，并按遗留 level 回填，避免进度丢失。"""
+        """为旧版本数据库补齐新列，避免进度丢失。
+
+        - study_state：补齐 SM-2 列（ease/interval/reps/lapses），按旧 level 回填
+        - books：补齐 source/file_path/word_count 列（多词书支持）
+        """
         cols = {r["name"] for r in
                 self._conn.execute("PRAGMA table_info(study_state)").fetchall()}
         additions = (
@@ -92,38 +98,56 @@ class Repository:
                 "interval = CASE level "
                 "WHEN 0 THEN 0 WHEN 1 THEN 1 WHEN 2 THEN 2 "
                 "WHEN 3 THEN 4 WHEN 4 THEN 7 WHEN 5 THEN 15 ELSE 15 END")
+
+        # books 表列迁移：补齐 source / file_path / word_count
+        book_cols = {r["name"] for r in
+                     self._conn.execute("PRAGMA table_info(books)").fetchall()}
+        book_additions = (
+            ("source", "TEXT NOT NULL DEFAULT 'builtin'"),
+            ("file_path", "TEXT"),
+            ("word_count", "INTEGER NOT NULL DEFAULT 0"),
+        )
+        book_missing = [(n, d) for n, d in book_additions if n not in book_cols]
+        for name, decl in book_missing:
+            self._conn.execute(f"ALTER TABLE books ADD COLUMN {name} {decl}")
         self._conn.commit()
 
     # ------------------------------------------------------------------ 种子
     def ensure_seeded(self) -> None:
-        """导入包内词库；词库为空或默认词库已更换时（重新）播种。"""
-        data = json.loads(seed_words_file().read_text(encoding="utf-8-sig"))
-        book = data["book"]
-        existing = self.get_book()
-        if self.count_words() > 0 and existing and existing.name == book["name"]:
-            return                              # 已是当前默认词库
-        # 词库为空，或打包的默认词库已更换（如切换到“雅思词汇”）：清空后重播
-        self._clear_library()
-        book_id = self.add_book(book["name"], book.get("description", ""))
-        self.add_words(book_id, data["words"])
+        """委托 BookManager 处理（空实现，保留接口兼容旧调用方）。"""
+        return
 
     def _clear_library(self) -> None:
-        """清空词书 / 单词 / 学习状态（切换默认词库时使用）。"""
+        """清空全部词书 / 单词 / 学习状态（紧急清理用）。"""
         self._conn.execute("DELETE FROM study_state")
         self._conn.execute("DELETE FROM words")
         self._conn.execute("DELETE FROM books")
-        # 旧库残留的会话快照与已背组数一并清除，避免脏数据影响新库
+        # 会话快照、已背组数（含按词书隔离的键）与活动词书 ID 一并清除
         self._conn.execute(
-            "DELETE FROM meta WHERE key IN "
-            "('session_new','session_review','completed_batches')")
+            "DELETE FROM meta WHERE key='active_book_id' "
+            "OR key LIKE 'session_new%' OR key LIKE 'session_review%' "
+            "OR key LIKE 'completed_batches%'")
         self._conn.commit()
 
-    def add_book(self, name: str, description: str = "") -> int:
+    def add_book(self, name: str, description: str = "",
+                 source: str = "builtin", file_path: Optional[str] = None,
+                 word_count: int = 0) -> int:
+        """新增词书并返回 book_id；首本词书自动设为活动词书。"""
         cur = self._conn.execute(
-            "INSERT INTO books(name, description) VALUES(?, ?)", (name, description)
+            "INSERT INTO books(name, description, source, file_path, word_count) "
+            "VALUES(?, ?, ?, ?, ?)",
+            (name, description, source, file_path, word_count),
         )
+        book_id = int(cur.lastrowid)
+        # 首本词书自动设为活动词书（便于旧代码 add_book 后直接查询）
+        if self.get_meta("active_book_id") is None:
+            self._conn.execute(
+                "INSERT INTO meta(key, value) VALUES('active_book_id', ?) "
+                "ON CONFLICT(key) DO UPDATE SET value=excluded.value",
+                (str(book_id),),
+            )
         self._conn.commit()
-        return int(cur.lastrowid)
+        return book_id
 
     def add_words(self, book_id: int, items: Iterable[dict]) -> None:
         rows = [
@@ -143,13 +167,74 @@ class Repository:
         )
         self._conn.commit()
 
-    # ------------------------------------------------------------------ 查询
-    def get_book(self) -> Optional[Book]:
-        row = self._conn.execute(
-            "SELECT id, name, description FROM books ORDER BY id LIMIT 1"
-        ).fetchone()
-        return Book(**dict(row)) if row else None
+    # ------------------------------------------------------------------ 词书查询
+    def _row_to_book(self, row: sqlite3.Row) -> Book:
+        """把数据库行转为 Book 对象（file_path NULL -> 空串）。"""
+        return Book(
+            id=row["id"],
+            name=row["name"],
+            description=row["description"],
+            source=row["source"] or "builtin",
+            file_path=row["file_path"] or "",
+            word_count=row["word_count"] or 0,
+        )
 
+    def list_books(self) -> list[Book]:
+        """所有词书（按 id 排序）。"""
+        rows = self._conn.execute(
+            "SELECT id, name, description, source, file_path, word_count "
+            "FROM books ORDER BY id"
+        ).fetchall()
+        return [self._row_to_book(r) for r in rows]
+
+    def get_book_by_id(self, book_id: int) -> Optional[Book]:
+        """按 id 查单个词书。"""
+        row = self._conn.execute(
+            "SELECT id, name, description, source, file_path, word_count "
+            "FROM books WHERE id=?", (book_id,)
+        ).fetchone()
+        return self._row_to_book(row) if row else None
+
+    def get_active_book_id(self) -> Optional[int]:
+        """读 meta.active_book_id，无则 None。"""
+        raw = self.get_meta("active_book_id")
+        return int(raw) if raw else None
+
+    def set_active_book_id(self, book_id: int) -> None:
+        """更新活动词书 ID。"""
+        self.set_meta("active_book_id", str(book_id))
+
+    def get_active_book(self) -> Optional[Book]:
+        """活动词书对象。"""
+        book_id = self.get_active_book_id()
+        if book_id is None:
+            return None
+        return self.get_book_by_id(book_id)
+
+    def get_book(self) -> Optional[Book]:
+        """向后兼容：返回活动词书（旧代码调用）。"""
+        return self.get_active_book()
+
+    def count_words_in_book(self, book_id: int) -> int:
+        """指定词书的总词数。"""
+        return int(self._conn.execute(
+            "SELECT COUNT(*) FROM words WHERE book_id=?", (book_id,)
+        ).fetchone()[0])
+
+    def clear_words_for_book(self, book_id: int) -> None:
+        """删除指定词书的 words 和 study_state（切词书前清理用）。"""
+        self._conn.execute(
+            "DELETE FROM study_state WHERE word_id IN "
+            "(SELECT id FROM words WHERE book_id=?)", (book_id,))
+        self._conn.execute("DELETE FROM words WHERE book_id=?", (book_id,))
+        self._conn.commit()
+
+    def delete_book(self, book_id: int) -> None:
+        """删除词书记录（调用方需先清理 words 并校验来源）。"""
+        self._conn.execute("DELETE FROM books WHERE id=?", (book_id,))
+        self._conn.commit()
+
+    # ------------------------------------------------------------------ 单词查询
     def _to_word(self, row: sqlite3.Row) -> Word:
         meanings = [
             Meaning(pos=m.get("pos", ""), meaning=m.get("meaning", ""))
@@ -177,62 +262,96 @@ class Repository:
         return self._to_word(row) if row else None
 
     def count_words(self) -> int:
-        return int(self._conn.execute("SELECT COUNT(*) FROM words").fetchone()[0])
+        """活动词书的总词数。"""
+        book_id = self.get_active_book_id()
+        if book_id is None:
+            return 0
+        return int(self._conn.execute(
+            "SELECT COUNT(*) FROM words WHERE book_id=?", (book_id,)
+        ).fetchone()[0])
 
     def count_learned(self) -> int:
-        """已学习 = 存在学习状态的词。"""
+        """已学习 = 活动词书中存在学习状态的词。"""
+        book_id = self.get_active_book_id()
+        if book_id is None:
+            return 0
         return int(
-            self._conn.execute("SELECT COUNT(*) FROM study_state").fetchone()[0]
+            self._conn.execute(
+                "SELECT COUNT(*) FROM study_state s JOIN words w ON w.id=s.word_id "
+                "WHERE w.book_id=?", (book_id,)
+            ).fetchone()[0]
         )
 
     def count_status(self, status: str) -> int:
+        """活动词书中指定状态的词数。"""
+        book_id = self.get_active_book_id()
+        if book_id is None:
+            return 0
         return int(
             self._conn.execute(
-                "SELECT COUNT(*) FROM study_state WHERE status=?", (status,)
+                "SELECT COUNT(*) FROM study_state s JOIN words w ON w.id=s.word_id "
+                "WHERE w.book_id=? AND s.status=?", (book_id, status)
             ).fetchone()[0]
         )
 
     def count_due(self, today: date) -> int:
         """今日待复习数（到期即计，含需周期性唤醒的已掌握词）。"""
+        book_id = self.get_active_book_id()
+        if book_id is None:
+            return 0
         return int(
             self._conn.execute(
-                "SELECT COUNT(*) FROM study_state "
-                "WHERE due_date IS NOT NULL AND due_date<=?",
-                (_date_str(today),),
+                "SELECT COUNT(*) FROM study_state s JOIN words w ON w.id=s.word_id "
+                "WHERE w.book_id=? AND s.due_date IS NOT NULL AND s.due_date<=?",
+                (book_id, _date_str(today)),
             ).fetchone()[0]
         )
 
     def count_reviewed_today(self, today: date) -> int:
+        """今日已复习数（活动词书）。"""
+        book_id = self.get_active_book_id()
+        if book_id is None:
+            return 0
         return int(
             self._conn.execute(
-                "SELECT COUNT(*) FROM study_state WHERE last_review=?",
-                (_date_str(today),),
+                "SELECT COUNT(*) FROM study_state s JOIN words w ON w.id=s.word_id "
+                "WHERE w.book_id=? AND s.last_review=?",
+                (book_id, _date_str(today)),
             ).fetchone()[0]
         )
 
     def get_new_words(self, limit: int) -> list[Word]:
-        """未学习的新词（按词库顺序）。"""
+        """未学习的新词（随机乱序抽取，仅活动词书）。"""
+        book_id = self.get_active_book_id()
+        if book_id is None:
+            return []
         rows = self._conn.execute(
             "SELECT w.* FROM words w LEFT JOIN study_state s ON s.word_id=w.id "
-            "WHERE s.word_id IS NULL ORDER BY w.id LIMIT ?",
-            (limit,),
+            "WHERE w.book_id=? AND s.word_id IS NULL ORDER BY RANDOM() LIMIT ?",
+            (book_id, limit),
         ).fetchall()
         return [self._to_word(r) for r in rows]
 
     def get_due_words(self, today: date, limit: int) -> list[Word]:
-        """今日到期需要复习的词（含需周期性唤醒的已掌握词）。"""
+        """今日到期需要复习的词（到期日优先、同日随机乱序；仅活动词书）。"""
+        book_id = self.get_active_book_id()
+        if book_id is None:
+            return []
         rows = self._conn.execute(
             "SELECT w.* FROM words w JOIN study_state s ON s.word_id=w.id "
-            "WHERE s.due_date IS NOT NULL AND s.due_date<=? "
-            "ORDER BY s.due_date, w.id LIMIT ?",
-            (_date_str(today), limit),
+            "WHERE w.book_id=? AND s.due_date IS NOT NULL AND s.due_date<=? "
+            "ORDER BY s.due_date, RANDOM() LIMIT ?",
+            (book_id, _date_str(today), limit),
         ).fetchall()
         return [self._to_word(r) for r in rows]
 
     def get_all_words(self) -> list[Word]:
-        """获取当前词库全部单词（按词库顺序）。"""
+        """获取活动词书全部单词（按词库顺序）。"""
+        book_id = self.get_active_book_id()
+        if book_id is None:
+            return []
         rows = self._conn.execute(
-            "SELECT * FROM words ORDER BY id"
+            "SELECT * FROM words WHERE book_id=? ORDER BY id", (book_id,)
         ).fetchall()
         return [self._to_word(r) for r in rows]
 
@@ -284,10 +403,23 @@ class Repository:
         self._conn.commit()
 
     def reset_progress(self) -> None:
-        self._conn.execute("DELETE FROM study_state")
-        self._conn.execute(
-            "DELETE FROM meta WHERE key IN "
-            "('session_new','session_review','completed_batches')")
+        """重置活动词书的学习进度（只清活动词书的 study_state + 会话快照）。"""
+        book_id = self.get_active_book_id()
+        if book_id is not None:
+            self._conn.execute(
+                "DELETE FROM study_state WHERE word_id IN "
+                "(SELECT id FROM words WHERE book_id=?)", (book_id,))
+            # 会话快照与已背组数按词书隔离，只清当前词书的键（含旧版全局键）
+            self._conn.execute(
+                "DELETE FROM meta WHERE key IN (?,?,?,"
+                "'session_new','session_review','completed_batches')",
+                (f"session_new:{book_id}", f"session_review:{book_id}",
+                 f"completed_batches:{book_id}"))
+        else:
+            self._conn.execute("DELETE FROM study_state")
+            self._conn.execute(
+                "DELETE FROM meta WHERE key LIKE 'session_new%' "
+                "OR key LIKE 'session_review%' OR key LIKE 'completed_batches%'")
         self._conn.commit()
 
     # ------------------------------------------------------------------ 元数据
@@ -307,6 +439,7 @@ class Repository:
 
     # ------------------------------------------------------------------ 统计
     def stats_summary(self, today: date) -> dict:
+        """活动词书的统计摘要。"""
         return {
             "total": self.count_words(),
             "learned": self.count_learned(),
