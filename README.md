@@ -28,6 +28,23 @@ WordMem 是一款基于 **PySide6 + SQLite** 的桌面背单词应用，界面�
 - **为谁准备**：备考雅思 / 考研等英语考试，希望有一款轻量、离线、无广告的桌面背单词工具的用户。
 - **核心理念**：极简界面 + 科学复习（SM-2 间隔重复），打开即背，背完即走。
 
+## 界面预览
+
+<table>
+  <tr>
+    <td align="center"><img src="docs/images/home.png" width="240" alt="首页"><br><b>首页</b><br>词书进度与学习入口</td>
+    <td align="center"><img src="docs/images/study_question.png" width="240" alt="背单词·出题"><br><b>背单词·出题</b><br>单词 + 音标 + 发音</td>
+    <td align="center"><img src="docs/images/study_answer.png" width="240" alt="背单词·作答"><br><b>背单词·作答</b><br>释义 + 例句轮播</td>
+  </tr>
+  <tr>
+    <td align="center"><img src="docs/images/spell.png" width="240" alt="拼写练习"><br><b>拼写练习</b><br>看释义拼单词</td>
+    <td align="center"><img src="docs/images/word_list.png" width="240" alt="单词列表"><br><b>单词列表</b><br>全词浏览，点行显隐</td>
+    <td></td>
+  </tr>
+</table>
+
+> 截图由 `scripts/capture_screenshots.py` 自动生成，界面更新后可一键重新生成。
+
 ## 功能特性
 
 ### 学习体验
@@ -146,8 +163,9 @@ WordMem/
 │   │   ├── theme.py           # 调色板与全局样式
 │   │   └── views/             # 首页 / 学习页 / 拼写页 / 单词列表 / 对话框
 │   └── resources/data/        # 词库种子 JSON
-├── scripts/                   # 构建与词库转换脚本
+├── scripts/                   # 构建 / 词库转换 / 界面截图脚本
 ├── packaging/                 # Inno Setup 安装包配置
+├── docs/images/               # README 界面截图（脚本自动生成）
 └── tests/                     # pytest 单元测试
 ```
 
