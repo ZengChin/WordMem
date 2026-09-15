@@ -18,6 +18,7 @@ dependencies = [
 [project.optional-dependencies]
 dev = [
     "pytest>=8.0",
+    "pillow>=10.0",   # scripts/capture_screenshots.py 合成 GIF 用
 ]
 
 [project.scripts]

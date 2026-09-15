@@ -39,7 +39,12 @@ WordMem 是一款基于 **PySide6 + SQLite** 的桌面背单词应用，界面�
   <tr>
     <td align="center"><img src="docs/images/spell.png" width="240" alt="拼写练习"><br><b>拼写练习</b><br>看释义拼单词</td>
     <td align="center"><img src="docs/images/word_list.png" width="240" alt="单词列表"><br><b>单词列表</b><br>全词浏览，点行显隐</td>
-    <td></td>
+    <td align="center"><img src="docs/images/settings.png" width="240" alt="设置"><br><b>设置</b><br>每组词数 / 重现间隔 / 发音</td>
+  </tr>
+  <tr>
+    <td align="center"><img src="docs/images/home_ghost.png" width="240" alt="隐形模式·首页"><br><b>隐形模式·首页</b><br>整窗透明，桌面透出</td>
+    <td align="center"><img src="docs/images/study_ghost.png" width="240" alt="隐形模式·背单词"><br><b>隐形模式·背单词</b><br>边工作边瞄单词</td>
+    <td align="center"><img src="docs/images/ghost_autohide.gif" width="240" alt="自动隐藏演示"><br><b>自动隐藏</b><br>鼠标移出仅留菜单栏</td>
   </tr>
 </table>
 
