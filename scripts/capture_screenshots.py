@@ -45,13 +45,8 @@ from wordmem.config import settings as _settings_mod  # noqa: E402
 
 _settings_mod.config_file = paths.config_file   # 覆盖已绑定的 from-import
 
-from PySide6.QtCore import QPoint, QRect, QThread, Qt  # noqa: E402
-from PySide6.QtGui import (  # noqa: E402
-    QColor,
-    QImage,
-    QLinearGradient,
-    QPainter,
-)
+from PySide6.QtCore import QPoint, QThread, Qt  # noqa: E402
+from PySide6.QtGui import QImage, QPainter  # noqa: E402
 from PySide6.QtWidgets import QApplication  # noqa: E402
 
 from wordmem.app import build_context  # noqa: E402
@@ -71,52 +66,12 @@ def _grab(window: MainWindow, name: str) -> None:
     print(f"saved {out.relative_to(ROOT)}")
 
 
-# ---- 桌面背景合成：透明模式内容近乎隐形，需衬在"桌面"上才能看清 ----
-def _fake_doc(p: QPainter, rect: QRect) -> None:
-    """画一个经典 Windows 蓝色窗口：蓝色标题条 + 白色内容区 + 灰色横线。"""
-    p.setPen(Qt.NoPen)
-    # 外框（经典窗口蓝）
-    p.setBrush(QColor("#1a5fc4"))
-    p.drawRoundedRect(rect, 8, 8)
-    # 标题条（亮蓝渐变，XP 风格）
-    grad = QLinearGradient(rect.left(), rect.top(), rect.left(), rect.top() + 28)
-    grad.setColorAt(0.0, QColor("#3d8bfd"))
-    grad.setColorAt(1.0, QColor("#1a5fc4"))
-    p.setBrush(grad)
-    p.drawRoundedRect(rect.adjusted(2, 2, -2, -rect.height() + 28), 6, 6)
-    # 标题条右侧三个控制钮（最小化 / 最大化 / 关闭，关闭在最右）
-    btn_y = rect.top() + 8
-    for i, color in enumerate(("#a8c8f0", "#a8c8f0", "#e81123")):
-        p.setBrush(QColor(color))
-        p.drawRoundedRect(rect.right() - 56 + i * 16, btn_y, 11, 11, 2, 2)
-    # 白色内容区
-    body = QRect(rect.left() + 3, rect.top() + 28, rect.width() - 6,
-                 rect.height() - 31)
-    p.setBrush(QColor(255, 255, 255, 245))
-    p.drawRect(body)
-    # 灰色横线模拟文字
-    line_y = body.top() + 18
-    for w_ratio in (0.72, 0.9, 0.8, 0.6, 0.85):
-        p.setBrush(QColor(120, 130, 140, 70))
-        p.drawRoundedRect(body.left() + 16, line_y,
-                          int(body.width() * w_ratio), 9, 4, 4)
-        line_y += 24
-
-
+# ---- 桌面背景合成：透明模式内容近乎隐形，衬在纯白底上隐约可见 ----
 def _make_desktop(w: int, h: int) -> QImage:
-    """合成 Windows 经典蓝色桌面背景（2x），尺寸为逻辑像素。"""
+    """纯白背景（2x），尺寸为逻辑像素。"""
     img = QImage(w * 2, h * 2, QImage.Format_ARGB32_Premultiplied)
     img.setDevicePixelRatio(2.0)
-    img.fill(Qt.transparent)
-    p = QPainter(img)
-    p.setRenderHint(QPainter.Antialiasing)
-    grad = QLinearGradient(0, 0, w, h)
-    grad.setColorAt(0.0, QColor("#4e83c2"))
-    grad.setColorAt(1.0, QColor("#2b5386"))
-    p.fillRect(0, 0, w, h, grad)
-    _fake_doc(p, QRect(16, 24, int(w * 0.55), int(h * 0.55)))
-    _fake_doc(p, QRect(int(w * 0.42), int(h * 0.5), int(w * 0.52), int(h * 0.44)))
-    p.end()
+    img.fill(Qt.white)
     return img
 
 
