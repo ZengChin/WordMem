@@ -1,0 +1,9 @@
+{
+  "default_book": "ielts_words.json",
+  "books": [
+    {"file": "ielts_words.json", "name": "雅思词汇", "description": "雅思核心词汇（含音标、释义与例句）"},
+    {"file": "cet4_words.json", "name": "CET4 词汇", "description": "大学英语四级核心词汇（含音标、释义与例句）"},
+    {"file": "cet6_words.json", "name": "CET6 词汇", "description": "大学英语六级核心词汇"},
+    {"file": "kaoyan_words.json", "name": "考研词汇", "description": "考研英语高频核心词汇（含音标、释义与例句）"}
+  ]
+}
