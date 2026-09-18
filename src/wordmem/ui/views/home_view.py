@@ -107,7 +107,6 @@ class HomeView(QWidget):
 
     start_session = Signal(str)  # "new" / "review"
     word_list_requested = Signal()
-    book_manage_requested = Signal()
 
     def __init__(self, ctx, parent=None) -> None:
         super().__init__(parent)
@@ -189,7 +188,12 @@ class HomeView(QWidget):
         StatsDialog(self.ctx, self.window()).exec()
 
     def _open_book_info(self) -> None:
-        self.book_manage_requested.emit()
+        from wordmem.ui.views.dialogs import BookInfoDialog
+
+        dlg = BookInfoDialog(self.ctx, self.window())
+        dlg.book_switched.connect(self.refresh)
+        dlg.exec()
+        self.refresh()
 
     def _open_word_list(self) -> None:
         self.word_list_requested.emit()

@@ -35,10 +35,6 @@ _POS_RE = re.compile(
 _SOUND_RE = re.compile(r'\[sound:[^\]]*\]', re.IGNORECASE)
 _TAG_RE = re.compile(r'<[^>]+>')
 _WS_RE = re.compile(r'\s+')
-_NUM_EX_RE = re.compile(r'\(\d+\)\s*')   # 多例句编号标记：(1)(2)(3)
-_LI_RE = re.compile(r'<li[^>]*>(.*?)</li>', re.IGNORECASE | re.DOTALL)
-_P_RE = re.compile(r'<p[^>]*>(.*?)</p>', re.IGNORECASE | re.DOTALL)
-_CJK_RE = re.compile(r'[\u4e00-\u9fff]')   # 判定是否含中文字符
 
 
 # ---------------------------------------------------------------------- 通用
@@ -71,64 +67,6 @@ def parse_definition(text: str) -> list[dict]:
         if seg:
             meanings.append({"pos": m.group(1) + ".", "meaning": seg})
     return meanings or [{"pos": "", "meaning": text}]
-
-
-def _split_numbered_examples(en: str, zh: str) -> list[dict]:
-    """把 '(1) … (2) … (3) …' 形式的多例句拆成多条，并与译文按序配对。
-
-    - 英文按 (n) 编号切分；切出多段时中文同样切分并按序配对；
-    - 无编号（单句）时整体作为一条例句；
-    - 中英段数不一致：多出的英文段译文留空，多余译文丢弃；
-    - 英文为空返回 []（该词无例句）。
-    """
-    en = (en or "").strip()
-    zh = (zh or "").strip()
-    if not en:
-        return []
-    en_parts = [p.strip() for p in _NUM_EX_RE.split(en) if p.strip()]
-    if len(en_parts) <= 1:                    # 无编号单句
-        return [{"text": en, "translation": zh}]
-    zh_parts = [p.strip() for p in _NUM_EX_RE.split(zh) if p.strip()]
-    return [
-        {"text": e, "translation": zh_parts[i] if i < len(zh_parts) else ""}
-        for i, e in enumerate(en_parts)
-    ]
-
-
-def _raw_at(fields: list[str], i: Optional[int]) -> str:
-    """取第 i 个 Anki 字段的原始值（不清洗，保留 HTML 供后续解析）。"""
-    if i is None:
-        return ""
-    return fields[i] if 0 <= i < len(fields) else ""
-
-
-def _extract_collins_examples(raw_html: str) -> list[dict]:
-    """从 Collins 双语词典 HTML 提取 <li><p>英文</p><p>中文</p></li> 例句对。
-
-    某些牌组（如考研）的「例句翻译」列整列为空，但「拓展」列内嵌了 Collins
-    词典 HTML，其中每个词性下都有成对的英文例句与中文译文。仅当某个 <li>
-    含 >=2 个 <p>、第一段为纯英文、第二段含中文时才采纳，避免把语法说明或
-    词组误当例句；同一英文例句去重。返回 [{"text", "translation"}]。
-    """
-    if not raw_html:
-        return []
-    out: list[dict] = []
-    seen: set[str] = set()
-    for li in _LI_RE.findall(raw_html):
-        ps = _P_RE.findall(li)
-        if len(ps) < 2:
-            continue
-        en = clean_field(ps[0])
-        zh = clean_field(ps[1])
-        if not en or not zh:
-            continue
-        if _CJK_RE.search(en) or not _CJK_RE.search(zh):
-            continue                          # 第一段须英文、第二段须中文
-        if en in seen:
-            continue
-        seen.add(en)
-        out.append({"text": en, "translation": zh})
-    return out
 
 
 def _normalize_simple(obj: dict) -> dict:
@@ -218,56 +156,9 @@ def _field_index(conn: sqlite3.Connection) -> dict:
             for i, f in enumerate(model.get("flds", []))}
 
 
-def _field_at(fields: list[str], i: Optional[int]) -> str:
-    """从 Anki 字段数组取第 i 个并清洗，i 为 None 或越界返回空串。"""
-    if i is None:
-        return ""
+def _field_at(fields: list[str], i: int) -> str:
+    """从 Anki 字段数组取第 i 个并清洗，越界返回空串。"""
     return clean_field(fields[i]) if 0 <= i < len(fields) else ""
-
-
-# 不同来源牌组的字段命名差异很大（英文 word/definition 或中文 单词/中文释义），
-# 按角色给出别名优先级；匹配时先精确后包含，且每个字段只认领一次。
-_ROLE_KEYS = {
-    "word": ("word", "英语单词", "英文单词", "单词", "english"),
-    "phonetic": ("phonetic", "英美音标", "音标", "注音", "pos"),
-    "definition": ("definition", "中文释义", "释义1", "释义", "翻译", "意思", "含义"),
-    "example_en": ("example_en", "英语例句", "英文例句", "例句", "example"),
-    "example_zh": ("example_zh", "中文例句", "例句翻译", "例句中文", "翻译例句"),
-    "collins": ("collins", "拓展", "扩展", "词典", "双语"),
-}
-
-
-def _map_fields(idx: dict) -> dict:
-    """把 Anki 模型字段名映射到 word/phonetic/definition/example_en/example_zh 角色。
-
-    idx: {字段名: ord}。返回 {role: ord}，未匹配到的角色不出现在结果里。
-    先按别名精确匹配（优先级高的别名先匹配），再退化为包含匹配；
-    每个字段只会被一个角色认领，避免释义/例句等互相串位。
-    """
-    names = list(idx.keys())
-    claimed: set = set()
-    result: dict = {}
-    for role, keys in _ROLE_KEYS.items():
-        matched = None
-        for mode in ("exact", "contains"):
-            for key in keys:
-                klow = key.lower()
-                for nm in names:
-                    if nm in claimed:
-                        continue
-                    low = nm.strip().lower()
-                    if (mode == "exact" and low == klow) or \
-                       (mode == "contains" and klow in low):
-                        matched = nm
-                        break
-                if matched is not None:
-                    break
-            if matched is not None:
-                break
-        if matched is not None:
-            claimed.add(matched)
-            result[role] = idx[matched]
-    return result
 
 
 # ---------------------------------------------------------------------- parsers
@@ -412,13 +303,11 @@ def parse_apkg(path: Path) -> dict:
         conn.row_factory = sqlite3.Row
         try:
             idx = _field_index(conn)
-            fm = _map_fields(idx)          # 按字段名智能映射，兼容中英文命名
-            wi = fm.get("word", 0)         # 无 word 字段时退化到第 0 列
-            pi = fm.get("phonetic")
-            di = fm.get("definition")
-            ei = fm.get("example_en")
-            ti = fm.get("example_zh")
-            ci = fm.get("collins")          # Collins 双语词典 HTML 列（如考研的拓展）
+            wi = idx.get("word", 0)
+            pi = idx.get("pos", 1)          # 该模型 "pos" 字段实为音标
+            di = idx.get("definition", 3)
+            ei = idx.get("example_en", 4)
+            ti = idx.get("example_zh", 5)
 
             words: list[dict] = []
             seen: set[str] = set()
@@ -433,13 +322,7 @@ def parse_apkg(path: Path) -> dict:
                 seen.add(key)
 
                 ex_en, ex_zh = _field_at(f, ei), _field_at(f, ti)
-                examples = _split_numbered_examples(ex_en, ex_zh)
-                # 例句翻译列整列为空时（如考研牌组），退化到从 Collins
-                # 双语 HTML 列提取带译文的多例句（需原始 HTML，故不经 clean_field）
-                if not any(e.get("translation") for e in examples):
-                    cx = _extract_collins_examples(_raw_at(f, ci))
-                    if cx:
-                        examples = cx
+                examples = [{"text": ex_en, "translation": ex_zh}] if ex_en else []
                 words.append({
                     "word": word,
                     "phonetic": _field_at(f, pi),

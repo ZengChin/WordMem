@@ -6,12 +6,12 @@
 
 [![Release](https://img.shields.io/github/v/release/ZengChin/WordMem?style=flat-square)](https://github.com/ZengChin/WordMem/releases)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](https://opensource.org/licenses/MIT)
-[![Python](https://img.shields.io/badge/Python-3.10%2B-3776AB?style=flat-square&logo=python&logoColor=white)](https://www.python.org/)
-[![PySide6](https://img.shields.io/badge/GUI-PySide6-41CD52?style=flat-square&logo=qt&logoColor=white)](https://doc.qt.io/qtforpython/)
+[![C++](https://img.shields.io/badge/C%2B%2B-17-00599C?style=flat-square&logo=c%2B%2B&logoColor=white)](https://isocpp.org/)
+[![Qt](https://img.shields.io/badge/GUI-Qt%206-41CD52?style=flat-square&logo=qt&logoColor=white)](https://www.qt.io/)
 [![Platform](https://img.shields.io/badge/Platform-Windows-0078D6?style=flat-square&logo=windows&logoColor=white)](https://github.com/ZengChin/WordMem/releases)
 
 背单词 · 间隔重复 · SM-2 记忆算法 · 艾宾浩斯遗忘曲线 · 雅思 / CET4 / CET6 / 考研 ·
-多词库切换 · 自定义导入 · 离线发音 · 便携绿色软件 · PySide6 · SQLite
+多词库切换 · 自定义导入 · 离线发音 · 便携绿色软件 · Qt6 · C++17 · SQLite
 
 [功能特性](#功能特性) · [下载安装](#下载安装) · [快速上手](#快速上手) · [自定义词库](#自定义词库) · [开发构建](#开发构建)
 
@@ -21,7 +21,7 @@
 
 ## 简介
 
-WordMem 是一款基于 **PySide6 + SQLite** 的桌面背单词应用，界面与交互参考主流背单词 App：
+WordMem 是一款基于 **Qt6 (C++) + SQLite** 的桌面背单词应用，界面与交互参考主流背单词 App：
 海滩色卡片式首页、沉浸式背单词页、透明模式与不透明度调节条。所有数据保存在本地，
 无需注册、无需联网，词库与记忆进度随主程序目录整体迁移。
 
@@ -47,8 +47,6 @@ WordMem 是一款基于 **PySide6 + SQLite** 的桌面背单词应用，界面�
     <td align="center"><img src="docs/images/ghost_autohide.gif" width="240" alt="自动隐藏演示"><br><b>自动隐藏</b><br>鼠标移出仅留菜单栏</td>
   </tr>
 </table>
-
-> 截图由 `scripts/capture_screenshots.py` 自动生成，界面更新后可一键重新生成。
 
 ## 功能特性
 
@@ -85,8 +83,9 @@ WordMem 是一款基于 **PySide6 + SQLite** 的桌面背单词应用，界面�
   （名称 / 描述 / 已学 / 待复习 / 进度条），下方按「内置词书 / 我的导入」分组列出
   全部词书，点行或「切换」按钮即可换书，当前书高亮「使用中」。
 - **导入自定义词书**：点「导入词书」进入导入页，点击或拖拽文件即可，支持
-  **JSON / JSONL / TXT / CSV / Anki .apkg**；格式可自动识别，`.apkg` 会自动映射
-  单词 / 音标 / 释义 / 例句字段。导入的词书归入「我的导入」，可单独删除（连同其学习进度）。
+  **JSON / JSONL / TXT / CSV / Anki .apkg**；格式可自动识别，`.apkg` 由内置 miniz
+  解压并自动映射单词 / 音标 / 释义 / 例句字段。导入的词书归入「我的导入」，
+  可单独删除（连同其学习进度）。
 - **推荐下载源**：导入页内置 AnkiWeb 共享牌组、KyleBing/english-vocabulary、
   skywind3000/ECDICT 等入口，一键跳转下载词库文件。
 
@@ -100,10 +99,11 @@ WordMem 是一款基于 **PySide6 + SQLite** 的桌面背单词应用，界面�
 
 ### 数据与离线
 
-- **离线发音**：Windows SAPI 朗读（pyttsx3），无需联网；未安装时自动隐藏该能力。
+- **离线发音**：Qt TextToSpeech（Windows SAPI 后端）朗读，无需联网；无可用后端时自动隐藏该能力。
 - **便携数据**：数据库、配置、日志全部存放在主程序同目录的 `WordMem/` 文件夹，
   整个目录拷走即完成迁移，U 盘可用。
 - **内置词库**：雅思 4127 / CET4 4027 / CET6 3991 / 考研 5491 词（含音标 / 释义 / 多例句），
+  经 Qt 资源系统（qrc）嵌入可执行文件，首次启动导入本地数据库；
   可在「词书」页自由切换；亦支持导入自定义词库（见[词库选择与导入](#词库选择与导入)）。
 
 ## 下载安装
@@ -119,90 +119,121 @@ WordMem 是一款基于 **PySide6 + SQLite** 的桌面背单词应用，界面�
 
 ## 快速上手
 
-从源码运行（需要 Python 3.10+）：
+从源码构建（需要 Qt 6.8+ 与 MSVC 2022，详见[开发构建](#开发构建)）：
 
-```bash
+```powershell
 git clone https://github.com/ZengChin/WordMem.git
 cd WordMem
-python -m venv .venv
-.venv\Scripts\pip install -r requirements.txt
-.venv\Scripts\python run.py
+powershell -ExecutionPolicy Bypass -File cpp\scripts\build_windows.ps1
 ```
 
+构建完成后运行 `cpp\build\WordMem.exe`（或直接使用 `dist/` 下的免安装目录 / 安装包）。
 首次启动会自动将内置词库导入 SQLite；之后每天打开软件，按首页提示
 「学新词」或「复习词」即可，算法会自动安排复习节奏。
 
 ## 自定义词库
 
 最简单的方式是在软件内导入：「词书」页 → 「导入词书」，点击或拖拽文件即可，
-支持 JSON / JSONL / TXT / CSV / Anki `.apkg`（详见[词库选择与导入](#词库选择与导入)）。
+支持 JSON / JSONL / TXT / CSV / Anki `.apkg`（详见[词库选择与导入](#词库选择与导入)），
+无需任何外部转换工具。
 
-面向批量 / 离线场景，`scripts/apkg_to_words.py` 可把 Anki 词库包（`.apkg`）
-转换为 WordMem JSON 格式（音标 / 释义 / 例句，用法见脚本内 docstring），
-再在导入页选择「WordMem JSON」格式导入。
+若要新增一本**内置**词书，把词条 JSON 放入 `cpp/resources/data/`，在
+`cpp/resources/data/book_registry.json` 注册，并将该文件加入
+`cpp/resources/resources.qrc`，重新构建即可随程序分发。
 
 ## 数据与配置
 
 | 内容 | 位置 |
 | --- | --- |
-| 词库种子 | `src/wordmem/resources/data/`（`ielts_words.json` / `kaoyan_words.json`） |
+| 词库种子 | `cpp/resources/data/`（`book_registry.json` + 各词书 `*_words.json`，经 qrc 嵌入） |
 | 用户数据 | 主程序同目录 `WordMem/`（`wordmem.db` / `config.json` / `logs/`） |
 
 ## 开发构建
 
-运行单元测试：
+### 环境依赖
 
-```bash
-.venv\Scripts\pip install pytest
-.venv\Scripts\pytest
-```
+- **Qt 6.8+**（组件：Core / Gui / Widgets / Sql / TextToSpeech / Test，TextToSpeech 依赖 Multimedia）
+- **MSVC 2022**（Visual Studio Build Tools，含 C++ 桌面开发工作负载）
+- **Inno Setup 6**（仅生成安装包时需要）
 
-一键构建 Windows 发行包（PyInstaller 打包 + Inno Setup 生成安装程序）：
+### 一键构建
 
-```bash
-.venv\Scripts\python scripts\build_windows.py
+`cpp/scripts/build_windows.ps1` 会自动定位 VS 与 Qt，执行 CMake + Ninja 构建、
+运行单元测试、`windeployqt` 收集运行时依赖，并用 Inno Setup 生成安装包：
+
+```powershell
+# 完整流程（构建 + 测试 + 部署 + 安装包）
+powershell -ExecutionPolicy Bypass -File cpp\scripts\build_windows.ps1
+
+# 常用开关
+powershell -ExecutionPolicy Bypass -File cpp\scripts\build_windows.ps1 -QtDir D:\Qt\6.8.3\msvc2022_64
+powershell -ExecutionPolicy Bypass -File cpp\scripts\build_windows.ps1 -SkipTests      # 跳过测试
+powershell -ExecutionPolicy Bypass -File cpp\scripts\build_windows.ps1 -SkipInstaller  # 不生成安装包
 ```
 
 产物输出至 `dist/`：`WordMem/WordMem.exe`（免安装目录版）与
 `WordMem-<版本>-setup.exe`（安装包）。
 
+### 手动构建与测试
+
+```powershell
+cd cpp
+cmake --preset windows-local        # 需按需修改 CMakePresets.json 中的 CMAKE_PREFIX_PATH
+cmake --build --preset windows-local-release
+ctest --test-dir build --output-on-failure
+```
+
+单元测试基于 **Qt Test**，覆盖记忆调度（`test_schedule`）、数据访问（`test_repository`）、
+导入解析（`test_importers`）与会话快照（`test_session`）四组。
+
 ## 项目结构
 
 ```
 WordMem/
-├── run.py                     # 开发启动入口
-├── pyproject.toml             # 打包与工具配置
-├── requirements.txt
-├── src/wordmem/
-│   ├── app.py                 # 组装与入口（日志 / 异常兜底 / 依赖装配）
-│   ├── config/                # 路径解析与用户配置（JSON 持久化）
-│   ├── core/
-│   │   ├── models.py          # 领域模型与记忆调度纯函数
-│   │   ├── repository.py      # SQLite 数据访问
-│   │   ├── study_service.py   # 学习会话编排（业务服务层）
-│   │   └── tts.py             # 发音服务（后台队列）
-│   ├── ui/
-│   │   ├── main_window.py     # 无边框主窗口（透明模式 / 置顶 / 自动隐藏）
-│   │   ├── title_bar.py       # 自定义标题栏
-│   │   ├── opacity_popup.py   # 线性不透明度调节条（横向滑杆弹窗）
-│   │   ├── widgets.py         # 通用控件（胶囊按钮 / 卡片 / 进度条…）
-│   │   ├── icons.py           # QPainter 程序化图标
-│   │   ├── theme.py           # 调色板与全局样式
-│   │   └── views/             # 首页 / 学习页 / 拼写页 / 单词列表 / 对话框
-│   └── resources/data/        # 词库种子 JSON
-├── scripts/                   # 构建 / 词库转换 / 界面截图脚本
-├── packaging/                 # Inno Setup 安装包配置
-├── docs/images/               # README 界面截图（脚本自动生成）
-└── tests/                     # pytest 单元测试
+├── cpp/
+│   ├── CMakeLists.txt           # 构建定义（核心库 / UI 库 / 可执行 / 测试）
+│   ├── CMakePresets.json        # 本地构建预设（MSVC + Ninja）
+│   ├── src/
+│   │   ├── main.cpp             # 组装与入口（依赖装配 / 全局异常兜底）
+│   │   ├── core/
+│   │   │   ├── models.*         # 领域模型与记忆调度纯函数
+│   │   │   ├── paths.*          # 便携路径解析（程序同目录 WordMem/）
+│   │   │   ├── settings.*       # 用户配置（JSON 持久化）
+│   │   │   ├── repository.*     # SQLite 数据访问（Qt Sql）
+│   │   │   ├── studyservice.*   # 学习会话编排（业务服务层）
+│   │   │   ├── importers.*      # 词库导入解析（JSON/JSONL/TXT/CSV/apkg）
+│   │   │   ├── bookmanager.*    # 词书注册 / 切换 / 内置词书导入
+│   │   │   └── speaker.*        # 发音服务（Qt TextToSpeech）
+│   │   └── ui/
+│   │       ├── mainwindow.*     # 无边框主窗口（透明模式 / 置顶 / 自动隐藏）
+│   │       ├── titlebar.*       # 自定义标题栏
+│   │       ├── opacitypopup.*   # 线性不透明度调节条（横向滑杆弹窗）
+│   │       ├── widgets.*        # 通用控件（胶囊按钮 / 卡片 / 进度条…）
+│   │       ├── icons.*          # QPainter 程序化图标
+│   │       ├── theme.*          # 调色板与全局样式
+│   │       ├── appcontext.h     # 跨视图共享的服务上下文
+│   │       └── views/           # 首页 / 学习 / 拼写 / 单词列表 / 词书管理 / 对话框
+│   ├── resources/
+│   │   ├── resources.qrc        # Qt 资源清单（内置词书嵌入可执行文件）
+│   │   └── data/                # 词库种子 JSON（注册表 + 各词书）
+│   ├── tests/                   # Qt Test 单元测试（4 组）
+│   ├── third_party/miniz/       # vendored zip 解压库（.apkg 导入用，MIT）
+│   └── scripts/
+│       └── build_windows.ps1    # 一键构建 / 测试 / 部署 / 打包脚本
+├── packaging/                   # Inno Setup 安装包配置
+├── docs/images/                 # README 界面截图
+└── .github/workflows/           # CI：Qt/C++ 构建 + 测试 + 打包发布
 ```
 
 ## 技术栈
 
-- **界面**：PySide6（Qt for Python），无边框自绘窗口，QPainter 程序化图标
-- **存储**：SQLite（标准库 sqlite3）
-- **发音**：pyttsx3（Windows SAPI 离线语音）
-- **打包**：PyInstaller + Inno Setup
-- **测试**：pytest
+- **界面**：Qt6 Widgets（C++17），无边框自绘窗口，QPainter 程序化图标
+- **存储**：SQLite（Qt Sql 模块，QSQLITE 驱动）
+- **发音**：Qt TextToSpeech（Windows SAPI 后端，离线语音）
+- **导入解压**：miniz（vendored 单文件 amalgamation，MIT）
+- **构建**：CMake + Ninja + MSVC，`windeployqt` 收集运行时依赖
+- **打包**：Inno Setup
+- **测试**：Qt Test + CTest
 
 ## License
 

@@ -1,0 +1,11 @@
+<!DOCTYPE RCC>
+<!-- 内置词书资源：编译进可执行文件，运行时经 :/data/... 访问（对齐 Python 包内 resources/data）。 -->
+<RCC version="1.0">
+    <qresource prefix="/">
+        <file>data/book_registry.json</file>
+        <file>data/ielts_words.json</file>
+        <file>data/cet4_words.json</file>
+        <file>data/cet6_words.json</file>
+        <file>data/kaoyan_words.json</file>
+    </qresource>
+</RCC>
