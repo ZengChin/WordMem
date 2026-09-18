@@ -1,0 +1,4 @@
+// 由 CMake configure_file 生成：把内置词书数据目录路径注入测试。
+#pragma once
+
+#define WORDBOOK_DATA_DIR "@WORDBOOK_DATA_DIR@"

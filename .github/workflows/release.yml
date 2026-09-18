@@ -1,6 +1,8 @@
 name: Release
 
-# 推送 v* 标签时自动构建 Windows 安装包并发布到 GitHub Release
+# 推送 v* 标签时自动构建 Windows 安装包并发布到 GitHub Release。
+# C++/Qt 版：jurplel/install-qt-action 装 Qt6（含语音/多媒体模块）-> CMake+Ninja 编译
+# -> ctest -> windeployqt 收集依赖 -> Inno Setup 打包。
 on:
   push:
     tags:
@@ -15,14 +17,15 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: actions/setup-python@v5
+      # 安装 Qt 6.8（MSVC 2022 64 位）。TextToSpeech 依赖 Multimedia，两者都要装。
+      # 该 action 会把 Qt 的 bin 加入 PATH，脚本经 qmake -query 自动定位前缀。
+      - name: Install Qt
+        uses: jurplel/install-qt-action@v4
         with:
-          python-version: "3.11"
-
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -e . pyinstaller
+          version: "6.8.3"
+          arch: "win64_msvc2022_64"
+          modules: "qtspeech qtmultimedia"
+          cache: true
 
       - name: Install Inno Setup
         shell: pwsh
@@ -31,8 +34,10 @@ jobs:
             choco install innosetup -y --no-progress
           }
 
-      - name: Build setup installer
-        run: python scripts/build_windows.py
+      # 一键：配置 + 编译 + 单元测试 + windeployqt + 生成 setup.exe
+      - name: Build, test and package
+        shell: pwsh
+        run: ./cpp/scripts/build_windows.ps1
 
       - name: Upload build artifact
         uses: actions/upload-artifact@v4

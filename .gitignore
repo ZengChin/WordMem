@@ -1,8 +1,20 @@
+# IDE / 工具缓存
+.qoder/
+.idea/
+.vscode/
+
+# C++ / CMake / Qt 构建产物
+build/
+dist/
+*.user
+CMakeLists.txt.user
+CMakeUserPresets.json
+CMakeCache.txt
+
+# Python（迁移过渡期保留，移除后可删）
 __pycache__/
 *.py[cod]
 *.egg-info/
-build/
-dist/
 .venv/
 venv/
 .pytest_cache/

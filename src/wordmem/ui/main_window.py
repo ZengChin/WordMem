@@ -33,7 +33,6 @@ from wordmem.core.tts import Speaker
 from wordmem.ui import theme
 from wordmem.ui.opacity_popup import OpacitySliderPopup
 from wordmem.ui.title_bar import TitleBar
-from wordmem.ui.views.book_manage_view import BookManageView, ImportBookView
 from wordmem.ui.views.home_view import HomeView
 from wordmem.ui.views.spell_view import SpellView
 from wordmem.ui.views.study_view import StudyView
@@ -98,14 +97,10 @@ class MainWindow(QWidget):
         self.study_view = StudyView(ctx, self)
         self.spell_view = SpellView(ctx, self)
         self.word_list_view = WordListPage(ctx, self)
-        self.book_manage_view = BookManageView(ctx, self)
-        self.import_book_view = ImportBookView(ctx, self)
         self.stack.addWidget(self.home_view)
         self.stack.addWidget(self.study_view)
         self.stack.addWidget(self.spell_view)
         self.stack.addWidget(self.word_list_view)
-        self.stack.addWidget(self.book_manage_view)
-        self.stack.addWidget(self.import_book_view)
 
         content = QWidget(self)
         self.content = content          # 自动隐藏时需要整体隐藏/恢复
@@ -126,16 +121,10 @@ class MainWindow(QWidget):
 
         self.home_view.start_session.connect(self._start_session)
         self.home_view.word_list_requested.connect(self._open_word_list)
-        self.home_view.book_manage_requested.connect(self._open_book_manage)
         self.study_view.back_requested.connect(self._go_home)
         self.study_view.spell_requested.connect(self._begin_spell)
         self.spell_view.back_requested.connect(self._go_home)
         self.word_list_view.back_requested.connect(self._go_home)
-        self.book_manage_view.back_requested.connect(self._go_home)
-        self.book_manage_view.book_switched.connect(self.home_view.refresh)
-        self.book_manage_view.import_requested.connect(self._open_import_book)
-        self.import_book_view.back_requested.connect(self._back_to_book_manage)
-        self.import_book_view.imported.connect(self._on_import_done)
 
         self._apply_config()
         self.stack.setCurrentWidget(self.home_view)
@@ -321,27 +310,6 @@ class MainWindow(QWidget):
         """首页词书卡列表按钮：在主窗口内切换到全部单词列表页。"""
         self.word_list_view.refresh()
         self.stack.setCurrentWidget(self.word_list_view)
-
-    def _open_book_manage(self) -> None:
-        """首页词书详情按钮：在主窗口内切换到词书管理页。"""
-        self.book_manage_view.refresh()
-        self.stack.setCurrentWidget(self.book_manage_view)
-
-    def _open_import_book(self) -> None:
-        """词书管理页 → 导入词书页。"""
-        self.import_book_view.reset()
-        self.stack.setCurrentWidget(self.import_book_view)
-
-    def _back_to_book_manage(self) -> None:
-        """导入词书页 → 返回词书管理页。"""
-        self.book_manage_view.refresh()
-        self.stack.setCurrentWidget(self.book_manage_view)
-
-    def _on_import_done(self) -> None:
-        """导入成功后刷新词书管理页并返回。"""
-        self.book_manage_view.refresh()
-        self.book_manage_view.book_switched.emit()
-        self.stack.setCurrentWidget(self.book_manage_view)
 
     # ------------------------------------------------------------ 原生拖边缩放
     def nativeEvent(self, eventType, message):  # noqa: N802
